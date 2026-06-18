@@ -1,0 +1,180 @@
+{
+  "AppShell": {
+    "dashboard": "Dashboard",
+    "cropRecommendation": "Crop Recommendation",
+    "diseaseDetection": "Disease Detection",
+    "personalizedSpace": "Personalized Space",
+    "profile": "Profile",
+    "login": "Login",
+    "register": "Register"
+  },
+  "Dashboard": {
+    "title": "Welcome to KrishiFarm.AI",
+    "description": "Your smart partner in modern farming. Powerful AI tools to boost your yield and protect your crops.",
+    "feature1Title": "AI Crop Recommendation",
+    "feature1Description": "Get tailored crop suggestions based on your farm's data.",
+    "feature2Title": "Plant Disease Detection",
+    "feature2Description": "Quickly identify plant diseases with our offline-first tool.",
+    "feature3Title": "Personalized Cultivation Space",
+    "feature3Description": "Generate a complete week-by-week plan for your crop.",
+    "getStarted": "Get Started"
+  },
+  "CropRecommendationPage": {
+    "title": "AI Crop Recommendation",
+    "description": "Fill in the details below to receive AI-powered crop recommendations tailored to your farm."
+  },
+  "DiseaseDetectionPage": {
+    "title": "Plant Disease Detection",
+    "description": "Upload an image of a plant leaf to detect diseases using AI. This feature works even when you are offline."
+  },
+  "PersonalizedSpacePage": {
+    "title": "Personalized Cultivation Space",
+    "description": "Generate a complete, week-by-week cultivation plan for your farm, from sowing to harvest."
+  },
+  "Chatbot": {
+    "title": "KrishiFarm.AI Chat",
+    "description": "Ask me anything about farming.",
+    "inputPlaceholder": "Type your question...",
+    "openChatbot": "Open Chatbot"
+  },
+  "CropPricesCard": {
+    "title": "Live Mandi Prices",
+    "description": "Latest commodity prices from markets across India.",
+    "loading": "Loading...",
+    "error": "An unknown error occurred",
+    "noPrices": "No crop prices found.",
+    "crop": "Crop",
+    "market": "Market",
+    "price": "Price (₹ per Quintal)"
+  },
+  "CropRecommendationForm": {
+    "farmDataTitle": "Field Data",
+    "districtLabel": "District",
+    "districtPlaceholder": "Select your district",
+    "seasonLabel": "Season",
+    "seasonPlaceholder": "Select a season",
+    "kharif": "Kharif",
+    "rabi": "Rabi",
+    "summer": "Summer",
+    "wholeYear": "Whole Year",
+    "soilAnalysisLabel": "Soil Analysis",
+    "soilAnalysisPlaceholder": "e.g., pH: 6.5, Nitrogen: High, Phosphorus: Medium, Potassium: Low",
+    "soilAnalysisDescription": "Enter the results from your latest soil test.",
+    "weatherDataLabel": "Weather & Climate Data",
+    "weatherDataPlaceholder": "e.g., Avg. Temp: 25°C, Annual Rainfall: 1200mm, Sunny days: ~280",
+    "weatherDataDescription": "Describe your local climate conditions.",
+    "getRecommendations": "Get Recommendations",
+    "analyzing": "Analyzing...",
+    "recommendationsTitle": "Recommendations",
+    "generating": "Generating recommendations...",
+    "recommendedCrops": "Recommended Crops",
+    "plantingInstructions": "Planting Instructions",
+    "riskAssessment": "Risk Assessment",
+    "placeholder": "Your personalized crop recommendations will appear here.",
+    "topographyLabel": "Field Topography",
+    "topographyPlaceholder": "Select land's slope",
+    "flat": "Flat",
+    "gentleSlope": "Gentle Slope",
+    "steepSlope": "Steep Slope",
+    "cropHistoryLabel": "Crop History (Last 3 Seasons)",
+    "season1Placeholder": "Last Season",
+    "season2Placeholder": "2 Seasons Ago",
+    "season3Placeholder": "3 Seasons Ago",
+    "cropHistoryDescription": "Select the crops grown in this field previously."
+  },
+  "DiseaseDetectionCard": {
+    "uploadTitle": "Upload Plant Image",
+    "badge": "AI-Powered",
+    "pictureLabel": "Plant Image",
+    "chooseFile": "Choose File",
+    "analyze": "Analyze Plant",
+    "analyzing": "Analyzing...",
+    "analyzingWithAI": "Analyzing with Gemini AI...",
+    "diagnosisResult": "Diagnosis Result",
+    "diagnosisLabel": "Diagnosis:",
+    "confidenceLabel": "Confidence:",
+    "observationsLabel": "AI's Observations:",
+    "treatmentLabel": "Recommended Treatment:",
+    "disclaimer": "Disclaimer: This tool is for informational purposes only. Always consult with a local agricultural expert for definitive diagnosis."
+  },
+  "PersonalizedSpace": {
+    "formTitle": "Cultivation Details",
+    "formDescription": "Provide your farm's details to generate a plan.",
+    "cropLabel": "Crop to Cultivate",
+    "cropPlaceholder": "e.g., Tomato, Wheat",
+    "districtLabel": "District",
+    "districtPlaceholder": "Select your district",
+    "sowingDateLabel": "Planned Sowing Date",
+    "sowingDateDescription": "This helps track your weekly progress.",
+    "soilReportLabel": "Soil Health Report (Optional)",
+    "soilReportPlaceholder": "Upload PDF or Image",
+    "soilReportDescription": "Uploading a report provides more accurate advice.",
+    "getPlan": "Generate Cultivation Plan",
+    "generatingPlan": "Generating Plan...",
+    "planTitle": "Your Cultivation Plan",
+    "planDescription": "A weekly guide from sowing to harvest.",
+    "downloadPdf": "Download as PDF",
+    "downloading": "Downloading...",
+    "week": "Week",
+    "currentWeek": "Current Week",
+    "placeholder": "Your personalized cultivation plan will appear here once generated.",
+    "disclaimer": "This is an AI-generated plan. Always adapt based on real-world field conditions and consult local experts.",
+    "error": {
+      "title": "Error",
+      "planFailed": "Failed to generate cultivation plan. Please try again.",
+      "pdfFailed": "Failed to generate PDF. Please try again later.",
+      "unexpected": "An unexpected error occurred. Please try again."
+    }
+  },
+  "LanguageSwitcher": {
+    "selectLanguage": "Select Language"
+  },
+  "LoginPage": {
+    "title": "Welcome to KrishiFarm.AI",
+    "description": "Access your account to get started."
+  },
+  "RegisterPage": {
+    "title": "Register",
+    "description": "Create a new KrishiFarm.AI account."
+  },
+  "LoginForm": {
+    "emailLabel": "Email",
+    "emailPlaceholder": "name@example.com",
+    "passwordLabel": "Password",
+    "loginButton": "Login",
+    "registerPrompt": "Don't have an account?",
+    "registerLink": "Register"
+  },
+  "RegisterForm": {
+    "nameLabel": "Full Name",
+    "namePlaceholder": "Your Name",
+    "emailLabel": "Email",
+    "emailPlaceholder": "name@example.com",
+    "passwordLabel": "Password",
+    "registerButton": "Create an account",
+    "loginPrompt": "Already have an account?",
+    "loginLink": "Login",
+    "soilTypeLabel": "Primary Soil Type",
+    "soilTypePlaceholder": "Select your farm's soil type",
+    "alluvial": "Alluvial",
+    "black": "Black (Regur)",
+    "redAndYellow": "Red and Yellow",
+    "laterite": "Laterite",
+    "other": "Other / I don't know",
+    "soilReportLabel": "Soil Health Report (Optional)",
+    "soilReportPlaceholder": "Upload PDF or Image"
+  },
+  "ProfilePage": {
+    "title": "My Profile",
+    "email": "Email",
+    "location": "Location",
+    "soilHealthTitle": "Annual Soil Health Record",
+    "soilHealthDescription": "Keep your soil profile updated for accurate recommendations.",
+    "uploadReportButton": "Upload New Report",
+    "reportYear": "Year",
+    "status": "Status",
+    "waterSource": "Primary Water Source",
+    "annualBudget": "Annual Farming Budget",
+    "soilType": "Primary Soil Type"
+  }
+}

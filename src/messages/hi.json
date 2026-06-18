@@ -1,0 +1,180 @@
+{
+  "AppShell": {
+    "dashboard": "tableau de bord",
+    "cropRecommendation": "फसल सिफारिश",
+    "diseaseDetection": "रोग पहचान",
+    "personalizedSpace": "व्यक्तिगत स्थान",
+    "profile": "प्रोफ़ाइल",
+    "login": "लॉग इन करें",
+    "register": "पंजीकरण"
+  },
+  "Dashboard": {
+    "title": "कृषि फार्म.एआई में आपका स्वागत है",
+    "description": "आधुनिक खेती में आपका स्मार्ट पार्टनर। अपनी उपज बढ़ाने और अपनी फसलों की सुरक्षा के लिए शक्तिशाली एआई उपकरण।",
+    "feature1Title": "एआई फसल सिफारिश",
+    "feature1Description": "अपने खेत के डेटा के आधार पर अनुरूप फसल सुझाव प्राप्त करें।",
+    "feature2Title": "पौध रोग पहचान",
+    "feature2Description": "हमारे ऑफ़लाइन-प्रथम टूल से पौधों की बीमारियों की तुरंत पहचान करें।",
+    "feature3Title": "व्यक्तिगत खेती की जगह",
+    "feature3Description": "अपनी फसल के लिए सप्ताह-दर-सप्ताह पूरी योजना बनाएं।",
+    "getStarted": "शुरू हो जाओ"
+  },
+  "CropRecommendationPage": {
+    "title": "एआई फसल सिफारिश",
+    "description": "अपने खेत के अनुरूप एआई-संचालित फसल सिफारिशें प्राप्त करने के लिए नीचे दिए गए विवरण भरें।"
+  },
+  "DiseaseDetectionPage": {
+    "title": "पादप रोग पहचान",
+    "description": "एआई का उपयोग करके बीमारियों का पता लगाने के लिए पौधे के पत्ते की एक छवि अपलोड करें। यह सुविधा आपके ऑफ़लाइन होने पर भी काम करती है।"
+  },
+  "PersonalizedSpacePage": {
+    "title": "व्यक्तिगत खेती की जगह",
+    "description": "बुवाई से लेकर कटाई तक, अपने खेत के लिए एक संपूर्ण, सप्ताह-दर-सप्ताह खेती की योजना बनाएं।"
+  },
+  "Chatbot": {
+    "title": "कृषि फार्म.एआई चैट",
+    "description": "खेती के बारे में मुझसे कुछ भी पूछें।",
+    "inputPlaceholder": "अपना सवाल टाइप करें...",
+    "openChatbot": "चैटबॉट खोलें"
+  },
+  "CropPricesCard": {
+    "title": "लाइव मंडी कीमतें",
+    "description": "पूरे भारत के बाजारों से नवीनतम कमोडिटी की कीमतें।",
+    "loading": "लोड हो रहा है...",
+    "error": "एक अज्ञात त्रुटि हुई",
+    "noPrices": "कोई फसल मूल्य नहीं मिला।",
+    "crop": "फसल",
+    "market": "बाजार",
+    "price": "कीमत (₹ प्रति क्विंटल)"
+  },
+  "CropRecommendationForm": {
+    "farmDataTitle": "खेत का डेटा",
+    "districtLabel": "जिला",
+    "districtPlaceholder": "अपना जिला चुनें",
+    "seasonLabel": "मौसम",
+    "seasonPlaceholder": "एक मौसम चुनें",
+    "kharif": "खरीफ",
+    "rabi": "रबी",
+    "summer": "गर्मी",
+    "wholeYear": "पूरे साल",
+    "topographyLabel": "खेत की स्थलाकृति",
+    "topographyPlaceholder": "भूमि का ढलान चुनें",
+    "flat": "समतल",
+    "gentleSlope": "हल्का ढलान",
+    "steepSlope": "तीव्र ढलान",
+    "cropHistoryLabel": "फसल इतिहास (पिछले 3 मौसम)",
+    "season1Placeholder": "पिछला मौसम",
+    "season2Placeholder": "2 मौसम पहले",
+    "season3Placeholder": "3 मौसम पहले",
+    "cropHistoryDescription": "इस खेत में पहले उगाई गई फसलों का चयन करें।",
+    "soilAnalysisLabel": "मृदा विश्लेषण",
+    "soilAnalysisPlaceholder": "उदा., पीएच: 6.5, नाइट्रोजन: उच्च, फास्फोरस: मध्यम, पोटेशियम: कम",
+    "soilAnalysisDescription": "अपने नवीनतम मृदा परीक्षण के परिणाम दर्ज करें।",
+    "weatherDataLabel": "मौसम और जलवायु डेटा",
+    "weatherDataPlaceholder": "उदा., औसत तापमान: 25°C, वार्षिक वर्षा: 1200mm, धूप वाले दिन: ~280",
+    "weatherDataDescription": "अपनी स्थानीय जलवायु परिस्थितियों का वर्णन करें।",
+    "getRecommendations": "सिफारिशें प्राप्त करें",
+    "analyzing": "विश्लेषण कर रहा है...",
+    "recommendationsTitle": "सिफारिशें",
+    "generating": "सिफारिशें उत्पन्न हो रही हैं...",
+    "recommendedCrops": "अनुशंसित फसलें",
+    "plantingInstructions": "रोपण निर्देश",
+    "riskAssessment": "जोखिम मूल्यांकन",
+    "placeholder": "आपकी व्यक्तिगत फसल सिफारिशें यहां दिखाई देंगी।"
+  },
+  "DiseaseDetectionCard": {
+    "uploadTitle": "पौधे की छवि अपलोड करें",
+    "badge": "एआई-पावर्ड",
+    "pictureLabel": "पौधे की छवि",
+    "chooseFile": "फ़ाइल चुनें",
+    "analyze": "पौधे का विश्लेषण करें",
+    "analyzing": "विश्लेषण कर रहा है...",
+    "analyzingWithAI": "जेमिनी एआई के साथ विश्लेषण कर रहा है...",
+    "diagnosisResult": "निदान परिणाम",
+    "diagnosisLabel": "निदान:",
+    "confidenceLabel": "आत्मविश्वास:",
+    "observationsLabel": "एआई के अवलोकन:",
+    "treatmentLabel": "अनुशंसित उपचार:",
+    "disclaimer": "अस्वीकरण: यह उपकरण केवल सूचनात्मक उद्देश्यों के लिए है। निश्चित निदान के लिए हमेशा एक स्थानीय कृषि विशेषज्ञ से सलाह लें।"
+  },
+  "PersonalizedSpace": {
+    "formTitle": "खेती का विवरण",
+    "formDescription": "योजना बनाने के लिए अपने खेत का विवरण प्रदान करें।",
+    "cropLabel": "खेती करने वाली फसल",
+    "cropPlaceholder": "जैसे, टमाटर, गेहूँ",
+    "districtLabel": "जिला",
+    "districtPlaceholder": "अपना जिला चुनें",
+    "sowingDateLabel": "योजनाबद्ध बुवाई की तारीख",
+    "sowingDateDescription": "यह आपकी साप्ताहिक प्रगति को ट्रैक करने में मदद करता है।",
+    "soilReportLabel": "मृदा स्वास्थ्य रिपोर्ट (वैकल्पिक)",
+    "soilReportPlaceholder": "पीडीएफ या छवि अपलोड करें",
+    "soilReportDescription": "रिपोर्ट अपलोड करने से अधिक सटीक सलाह मिलती है।",
+    "getPlan": "खेती योजना बनाएं",
+    "generatingPlan": "योजना बना रहा है...",
+    "planTitle": "आपकी खेती की योजना",
+    "planDescription": "बुवाई से लेकर कटाई तक एक साप्ताहिक गाइड।",
+    "downloadPdf": "पीडीएफ के रूप में डाउनलोड करें",
+    "downloading": "डाउनलोड हो रहा है...",
+    "week": "सप्ताह",
+    "currentWeek": "वर्तमान सप्ताह",
+    "placeholder": "आपकी व्यक्तिगत खेती योजना यहाँ दिखाई देगी।",
+    "disclaimer": "यह एक एआई-जनित योजना है। वास्तविक क्षेत्र की स्थितियों के आधार पर हमेशा अनुकूलन करें और स्थानीय विशेषज्ञों से परामर्श करें।",
+    "error": {
+      "title": "त्रुटि",
+      "planFailed": "खेती योजना बनाने में विफल। कृपया पुन: प्रयास करें।",
+      "pdfFailed": "पीडीएफ बनाने में विफल। कृपया बाद में पुन: प्रयास करें।",
+      "unexpected": "एक अप्रत्याशित त्रुटि हुई। कृपया पुन: प्रयास करें।"
+    }
+  },
+  "LanguageSwitcher": {
+    "selectLanguage": "भाषा चुने"
+  },
+  "LoginPage": {
+    "title": "कृषि फार्म.एआई में आपका स्वागत है",
+    "description": "शुरू करने के लिए अपने खाते तक पहुंचें।"
+  },
+  "RegisterPage": {
+    "title": "पंजीकरण",
+    "description": "एक नया कृषि फार्म.एआई खाता बनाएं।"
+  },
+  "LoginForm": {
+    "emailLabel": "ईमेल",
+    "emailPlaceholder": "name@example.com",
+    "passwordLabel": "पासवर्ड",
+    "loginButton": "लॉग इन करें",
+    "registerPrompt": "क्या आपका खाता नहीं है?",
+    "registerLink": "पंजीकरण"
+  },
+  "RegisterForm": {
+    "nameLabel": "पूरा नाम",
+    "namePlaceholder": "आपका नाम",
+    "emailLabel": "ईमेल",
+    "emailPlaceholder": "name@example.com",
+    "passwordLabel": "पासवर्ड",
+    "registerButton": "खाता बनाएं",
+    "loginPrompt": "क्या आपके पास पहले से एक खाता है?",
+    "loginLink": "लॉग इन करें",
+    "soilTypeLabel": "प्राथमिक मिट्टी का प्रकार",
+    "soilTypePlaceholder": "अपने खेत की मिट्टी का प्रकार चुनें",
+    "alluvial": "जलोढ़",
+    "black": "काली (रेगुर)",
+    "redAndYellow": "लाल और पीली",
+    "laterite": "लैटेराइट",
+    "other": "अन्य / मुझे नहीं पता",
+    "soilReportLabel": "मृदा स्वास्थ्य रिपोर्ट (वैकल्पिक)",
+    "soilReportPlaceholder": "पीडीएफ या छवि अपलोड करें"
+  },
+  "ProfilePage": {
+    "title": "मेरी प्रोफाइल",
+    "email": "ईमेल",
+    "location": "स्थान",
+    "soilHealthTitle": "वार्षिक मृदा स्वास्थ्य रिकॉर्ड",
+    "soilHealthDescription": "सटीक सिफारिशों के लिए अपनी मिट्टी की प्रोफाइल को अपडेट रखें।",
+    "uploadReportButton": "नई रिपोर्ट अपलोड करें",
+    "reportYear": "वर्ष",
+    "status": "स्थिति",
+    "waterSource": "प्राथमिक जल स्रोत",
+    "annualBudget": "वार्षिक खेती बजट",
+    "soilType": "प्राथमिक मिट्टी का प्रकार"
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "placeholderImages": [
+    {
+      "id": "dashboard-hero",
+      "description": "A beautiful lush green farm field under a bright sun.",
+      "imageUrl": "https://picsum.photos/seed/farm-hero/1200/400",
+      "imageHint": "farm field"
+    },
+    {
+      "id": "crop-recommendation-card",
+      "description": "A basket full of fresh vegetables.",
+      "imageUrl": "https://picsum.photos/seed/veg-basket/400/300",
+      "imageHint": "vegetable basket"
+    },
+    {
+      "id": "disease-detection-card",
+      "description": "A close-up of a green leaf with some spots.",
+      "imageUrl": "https://picsum.photos/seed/leaf-spot/400/300",
+      "imageHint": "plant leaf"
+    },
+    {
+      "id": "personalized-advice-card",
+      "description": "A farmer looking thoughtfully at their crops.",
+      "imageUrl": "https://picsum.photos/seed/farmer-look/400/300",
+      "imageHint": "farmer looking"
+    },
+    {
+      "id": "chatbot-card",
+      "description": "A person wearing a headset for customer support.",
+      "imageUrl": "https://picsum.photos/seed/support-op/400/300",
+      "imageHint": "customer support"
+    },
+    {
+      "id": "plant-preview",
+      "description": "A healthy green plant.",
+      "imageUrl": "https://picsum.photos/seed/plant-preview/600/400",
+      "imageHint": "green plant"
+    }
+  ]
+}
