@@ -88,16 +88,16 @@ export default function CropRecommendationForm() {
         } else {
           toast({
             variant: 'destructive',
-            title: 'Error',
-            description: 'Failed to get recommendations. Please try again.',
+            title: t('CropRecommendationForm.errorTitle'),
+            description: t('CropRecommendationForm.planFailed'),
           });
         }
       } catch (error: any) {
         console.error('AI Error:', error);
         toast({
           variant: 'destructive',
-          title: 'Analysis Failed',
-          description: error.message || 'Failed to get recommendations. Please try again.',
+          title: t('CropRecommendationForm.analysisFailedTitle'),
+          description: error.message || t('CropRecommendationForm.planFailed'),
         });
       }
     });
@@ -198,7 +198,7 @@ export default function CropRecommendationForm() {
                                 </SelectTrigger>
                                 </FormControl>
                                 <SelectContent>
-                                  {commonCrops.map(c => <SelectItem key={c} value={c}>{c}</SelectItem>)}
+                                  {commonCrops.map(c => <SelectItem key={c} value={c}>{t(`CropRecommendationForm.${c.toLowerCase().replace(' ', '')}`)}</SelectItem>)}
                                 </SelectContent>
                             </Select>
                             </FormItem>
@@ -216,7 +216,7 @@ export default function CropRecommendationForm() {
                                 </SelectTrigger>
                                 </FormControl>
                                 <SelectContent>
-                                  {commonCrops.map(c => <SelectItem key={c} value={c}>{c}</SelectItem>)}
+                                  {commonCrops.map(c => <SelectItem key={c} value={c}>{t(`CropRecommendationForm.${c.toLowerCase().replace(' ', '')}`)}</SelectItem>)}
                                 </SelectContent>
                             </Select>
                             </FormItem>
@@ -234,7 +234,7 @@ export default function CropRecommendationForm() {
                                 </SelectTrigger>
                                 </FormControl>
                                 <SelectContent>
-                                  {commonCrops.map(c => <SelectItem key={c} value={c}>{c}</SelectItem>)}
+                                  {commonCrops.map(c => <SelectItem key={c} value={c}>{t(`CropRecommendationForm.${c.toLowerCase().replace(' ', '')}`)}</SelectItem>)}
                                 </SelectContent>
                             </Select>
                             </FormItem>

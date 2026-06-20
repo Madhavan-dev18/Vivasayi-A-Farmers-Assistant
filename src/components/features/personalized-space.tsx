@@ -176,18 +176,20 @@ export default function PersonalizedSpace() {
       });
     } catch (error: any) {
       // Supabase's PostgrestError is a plain object (not a native Error),
-      // so logging it directly can render as {} depending on how the
-      // console/dev overlay serializes it. Pull out the actual fields.
-      console.error('Error saving plan:', {
-        message: error?.message,
-        details: error?.details,
-        hint: error?.hint,
-        code: error?.code,
-      });
+      // and Next.js dev overlay serializes plain objects as {}.
+      // We wrap plain objects in a native Error to ensure they display correctly.
+      if (error instanceof Error) {
+        console.error('Error saving plan:', error);
+      } else {
+        const errorMsg = error?.message || 'Unknown error';
+        const errorDetails = typeof error === 'object' ? JSON.stringify(error) : String(error);
+        console.error('Error saving plan:', new Error(`${errorMsg} - ${errorDetails}`));
+      }
+
       toast({
         variant: 'destructive',
-        title: 'Save Failed',
-        description: error?.message || 'Failed to save cultivation plan. Please try again.',
+        title: t('PersonalizedSpace.saveFailedTitle'),
+        description: error?.message || t('PersonalizedSpace.saveFailedDescription'),
       });
     }
   };
@@ -450,7 +452,7 @@ export default function PersonalizedSpace() {
                                         <div className="my-2">
                                           <DynamicIcon name={day.iconName} className="size-6 text-primary" />
                                         </div>
-                                        <p className="text-xs text-muted-foreground">{day.tasks || 'No specific task'}</p>
+                                        <p className="text-xs text-muted-foreground">{day.tasks || t('PersonalizedSpace.noSpecificTask')}</p>
                                       </div>
                                     ))}
                                   </div>

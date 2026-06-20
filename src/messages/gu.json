@@ -1,14 +1,18 @@
-
 {
   "AppShell": {
     "dashboard": "Dashboard",
     "cropRecommendation": "Crop Recommendation",
     "diseaseDetection": "Disease Detection",
-    "personalizedAdvice": "Personalized Advice",
-    "profile": "Profile"
+    "personalizedSpace": "Personalized Space",
+    "profile": "Profile",
+    "login": "Login",
+    "register": "Register",
+    "farms": "Farms",
+    "signOut": "Sign Out",
+    "logo": "Vivasayi"
   },
   "Dashboard": {
-    "title": "Welcome to KrishiFarm.AI",
+    "title": "Welcome to Vivasayi",
     "description": "Your smart partner in modern farming. Powerful AI tools to boost your yield and protect your crops.",
     "feature1Title": "AI Crop Recommendation",
     "feature1Description": "Get tailored crop suggestions based on your farm's data.",
@@ -26,12 +30,12 @@
     "title": "Plant Disease Detection",
     "description": "Upload an image of a plant leaf to detect diseases using AI. This feature works even when you are offline."
   },
-  "PersonalizedAdvicePage": {
-    "title": "Personalized Farming Advice",
-    "description": "Get daily, AI-generated advice based on your farm's specifics and local weather forecasts."
+  "PersonalizedSpacePage": {
+    "title": "Personalized Cultivation Space",
+    "description": "Generate a complete, week-by-week cultivation plan for your farm, from sowing to harvest."
   },
   "Chatbot": {
-    "title": "KrishiFarm.AI Chat",
+    "title": "Vivasayi Chat",
     "description": "Ask me anything about farming.",
     "inputPlaceholder": "Type your question...",
     "openChatbot": "Open Chatbot"
@@ -56,16 +60,6 @@
     "rabi": "Rabi",
     "summer": "Summer",
     "wholeYear": "Whole Year",
-    "topographyLabel": "Field Topography",
-    "topographyPlaceholder": "Select land's slope",
-    "flat": "Flat",
-    "gentleSlope": "Gentle Slope",
-    "steepSlope": "Steep Slope",
-    "cropHistoryLabel": "Crop History (Last 3 Seasons)",
-    "season1Placeholder": "Last Season",
-    "season2Placeholder": "2 Seasons Ago",
-    "season3Placeholder": "3 Seasons Ago",
-    "cropHistoryDescription": "Select the crops grown in this field previously.",
     "soilAnalysisLabel": "Soil Analysis",
     "soilAnalysisPlaceholder": "e.g., pH: 6.5, Nitrogen: High, Phosphorus: Medium, Potassium: Low",
     "soilAnalysisDescription": "Enter the results from your latest soil test.",
@@ -79,7 +73,30 @@
     "recommendedCrops": "Recommended Crops",
     "plantingInstructions": "Planting Instructions",
     "riskAssessment": "Risk Assessment",
-    "placeholder": "Your personalized crop recommendations will appear here."
+    "placeholder": "Your personalized crop recommendations will appear here.",
+    "topographyLabel": "Field Topography",
+    "topographyPlaceholder": "Select land's slope",
+    "flat": "Flat",
+    "gentleSlope": "Gentle Slope",
+    "steepSlope": "Steep Slope",
+    "cropHistoryLabel": "Crop History (Last 3 Seasons)",
+    "season1Placeholder": "Last Season",
+    "season2Placeholder": "2 Seasons Ago",
+    "season3Placeholder": "3 Seasons Ago",
+    "cropHistoryDescription": "Select the crops grown in this field previously.",
+    "errorTitle": "Error",
+    "planFailed": "Failed to get recommendations. Please try again.",
+    "analysisFailedTitle": "Analysis Failed",
+    "rice": "Rice",
+    "wheat": "Wheat",
+    "maize": "Maize",
+    "cotton": "Cotton",
+    "sugarcane": "Sugarcane",
+    "soybean": "Soybean",
+    "potato": "Potato",
+    "tomato": "Tomato",
+    "onion": "Onion",
+    "none": "None"
   },
   "DiseaseDetectionCard": {
     "uploadTitle": "Upload Plant Image",
@@ -94,35 +111,71 @@
     "confidenceLabel": "Confidence:",
     "observationsLabel": "AI's Observations:",
     "treatmentLabel": "Recommended Treatment:",
-    "disclaimer": "Disclaimer: This tool is for informational purposes only. Always consult with a local agricultural expert for definitive diagnosis."
+    "disclaimer": "Disclaimer: This tool is for informational purposes only. Always consult with a local agricultural expert for definitive diagnosis.",
+    "takePhoto": "Take Photo",
+    "invalidFileTitle": "Invalid File",
+    "invalidFileDescription": "Please upload a valid image file.",
+    "noImageTitle": "No Image",
+    "noImageDescription": "Please upload an image first.",
+    "analysisFailedTitle": "Analysis Failed",
+    "analysisFailedDescription": "An unexpected error occurred. Please try again later.",
+    "healthy": "Healthy"
   },
-  "PersonalizedAdviceForm": {
-    "formTitle": "Your Farm Details",
-    "locationLabel": "Location",
-    "locationPlaceholder": "e.g., Punjab, India",
-    "locationDescription": "Your district for local weather data.",
-    "cropLabel": "Current Crop",
-    "cropPlaceholder": "e.g., Wheat",
-    "soilAnalysisLabel": "Soil Analysis",
-    "soilAnalysisPlaceholder": "e.g., pH: 6.5, Nitrogen: High, Sandy Loam soil",
-    "soilAnalysisDescription": "Provide your latest soil test results or a general description.",
-    "getAdvice": "Get Advice",
-    "generatingAdvice": "Generating Advice...",
-    "adviceTitle": "Today's Advice",
-    "adviceDescription": "Personalized recommendations based on your input and live weather data.",
-    "analyzingWeather": "Checking weather and analyzing...",
-    "placeholder": "Your personalized advice will be displayed here."
+  "PersonalizedSpace": {
+    "formTitle": "Cultivation Details",
+    "formDescription": "Provide your farm's details to generate a plan.",
+    "cropLabel": "Crop to Cultivate",
+    "cropPlaceholder": "e.g., Tomato, Wheat",
+    "districtLabel": "District",
+    "districtPlaceholder": "Select your district",
+    "sowingDateLabel": "Planned Sowing Date",
+    "sowingDateDescription": "This helps track your weekly progress.",
+    "soilReportLabel": "Soil Health Report (Optional)",
+    "soilReportPlaceholder": "Upload PDF or Image",
+    "soilReportDescription": "Uploading a report provides more accurate advice.",
+    "getPlan": "Generate Cultivation Plan",
+    "generatingPlan": "Generating Plan...",
+    "planTitle": "Your Cultivation Plan",
+    "planDescription": "A weekly guide from sowing to harvest.",
+    "downloadPdf": "Download as PDF",
+    "downloading": "Downloading...",
+    "week": "Week",
+    "currentWeek": "Current Week",
+    "placeholder": "Your personalized cultivation plan will appear here once generated.",
+    "disclaimer": "This is an AI-generated plan. Always adapt based on real-world field conditions and consult local experts.",
+    "error": {
+      "title": "Error",
+      "planFailed": "Failed to generate cultivation plan. Please try again.",
+      "pdfFailed": "Failed to generate PDF. Please try again later.",
+      "unexpected": "An unexpected error occurred. Please try again.",
+      "modelOverloaded": "AI is currently overloaded. Please try again."
+    },
+    "success": {
+      "planSaved": "Plan saved successfully.",
+      "notificationsEnabled": "Notifications enabled.",
+      "pdfDownloaded": "PDF downloaded successfully."
+    },
+    "savePlan": "Save Plan",
+    "tasksForWeek": "Tasks for Week",
+    "dailyPlan": "Daily Plan",
+    "noSpecificTask": "No specific task",
+    "saveFailedTitle": "Save Failed",
+    "saveFailedDescription": "Failed to save cultivation plan. Please try again."
   },
   "LanguageSwitcher": {
     "selectLanguage": "Select Language"
   },
   "LoginPage": {
-    "title": "Welcome to KrishiFarm.AI",
-    "description": "Access your account to get started."
+    "title": "Welcome to Vivasayi",
+    "description": "Access your account to get started.",
+    "noAccount": "Don't have an account?",
+    "signUp": "Sign Up"
   },
   "RegisterPage": {
     "title": "Register",
-    "description": "Create a new KrishiFarm.AI account."
+    "description": "Create a new Vivasayi account.",
+    "haveAccount": "Already have an account?",
+    "signIn": "Sign In"
   },
   "LoginForm": {
     "emailLabel": "Email",
@@ -130,7 +183,16 @@
     "passwordLabel": "Password",
     "loginButton": "Login",
     "registerPrompt": "Don't have an account?",
-    "registerLink": "Register"
+    "registerLink": "Register",
+    "successTitle": "Login Successful",
+    "successDescription": "Welcome back!",
+    "errorTitle": "Login Failed",
+    "errorDescription": "Please check your credentials and try again.",
+    "googleErrorDescription": "Failed to login with Google.",
+    "passwordPlaceholder": "Enter your password",
+    "loggingIn": "Logging in...",
+    "orContinueWith": "Or continue with",
+    "googleButton": "Google"
   },
   "RegisterForm": {
     "nameLabel": "Full Name",
@@ -147,7 +209,20 @@
     "black": "Black (Regur)",
     "redAndYellow": "Red and Yellow",
     "laterite": "Laterite",
-    "other": "Other / I don't know"
+    "other": "Other / I don't know",
+    "soilReportLabel": "Soil Health Report (Optional)",
+    "soilReportPlaceholder": "Upload PDF or Image",
+    "uploadFailedTitle": "Upload Failed",
+    "uploadFailedDescription": "Failed to upload the file.",
+    "successTitle": "Registration Successful",
+    "successDescription": "Your account has been created.",
+    "checkEmailTitle": "Check Your Email",
+    "checkEmailDescription": "We've sent you a confirmation link.",
+    "errorTitle": "Registration Error",
+    "errorDescription": "Something went wrong. Please try again.",
+    "creatingAccount": "Creating Account...",
+    "reportUploadSkippedTitle": "Report Upload Skipped",
+    "reportUploadSkippedDescription": "Please verify your email first. You can upload the report from your profile later."
   },
   "ProfilePage": {
     "title": "My Profile",
@@ -160,6 +235,166 @@
     "status": "Status",
     "waterSource": "Primary Water Source",
     "annualBudget": "Annual Farming Budget",
-    "soilType": "Primary Soil Type"
+    "soilType": "Primary Soil Type",
+    "appSettingsTitle": "Language Settings",
+    "appSettingsDescription": "Change your preferred language for the application.",
+    "languageLabel": "App Language",
+    "notSet": "Not set",
+    "active": "Active",
+    "archived": "Archived",
+    "reportUploadedTitle": "Report Uploaded",
+    "reportUploadedDescription": "Your soil report has been successfully uploaded.",
+    "uploadFailedTitle": "Upload Failed",
+    "uploadFailedDescription": "Failed to upload the soil report."
+  },
+  "DashboardHomePage": {
+    "title": "Dashboard"
+  },
+  "FarmsAddPage": {
+    "authRequiredTitle": "Authentication Required",
+    "authRequiredDescription": "You must be logged in to add a farm.",
+    "successTitle": "Success",
+    "errorTitle": "Error",
+    "errorDescription": "Failed to add farm. Please try again.",
+    "title": "Add Farm",
+    "description": "Enter the details of your new farm.",
+    "cardTitle": "Farm Details",
+    "farmNameLabel": "Farm Name",
+    "farmNamePlaceholder": "e.g., North Field",
+    "sizeLabel": "Size (Acres)",
+    "sizePlaceholder": "e.g., 5",
+    "locationLabel": "Location",
+    "locationPlaceholder": "Village, State",
+    "locationDescription": "Where is this farm located?",
+    "districtLabel": "District",
+    "districtPlaceholder": "Select district",
+    "soilTypeLabel": "Soil Type",
+    "soilTypePlaceholder": "Select soil type",
+    "topographyLabel": "Topography",
+    "topographyPlaceholder": "Select topography",
+    "waterSourceLabel": "Water Source",
+    "waterSourcePlaceholder": "Select water source",
+    "cancel": "Cancel",
+    "addingFarm": "Adding Farm...",
+    "addFarm": "Add Farm"
+  },
+  "FarmsPage": {
+    "title": "My Farms",
+    "description": "Manage your registered farms.",
+    "addFarm": "Add Farm",
+    "noFarmsYet": "No farms found.",
+    "addFirstFarm": "Add your first farm to get started."
+  },
+  "VoiceInputButton": {
+    "errorTitle": "Voice Error",
+    "unsupportedTitle": "Unsupported",
+    "unsupportedDescription": "Voice input is not supported on your browser.",
+    "languageNotSupportedDescription": "Voice input isn't available in {langName} on this device. Try typing instead, or switch to a language your device supports for voice.",
+    "genericErrorDescription": "Could not start voice recognition: {error}"
+  },
+  "SpeakButton": {
+    "unsupportedTitle": "Not supported",
+    "unsupportedDescription": "Your browser does not support text-to-speech.",
+    "voiceNotAvailableTitle": "Voice not available on this device",
+    "voiceNotAvailableDescription": "Your device doesn't have a text-to-speech voice installed for {langName}. The text is still shown above — some devices let you install more voices in their system language settings.",
+    "errorTitle": "Could not read this aloud",
+    "errorDescription": "Something went wrong with text-to-speech. Please try again."
+  },
+  "CropStatus": {
+    "title": "Active Crops",
+    "noCrops": "No crops planted yet.",
+    "planted": "Planted:",
+    "healthy": "Healthy",
+    "needsAttention": "Needs Attention",
+    "harvestingSoon": "Harvesting Soon"
+  },
+  "DailyAssistant": {
+    "title": "Your Cultivation Plan",
+    "description": "A weekly guide from sowing to harvest.",
+    "week": "Week",
+    "of": "of",
+    "tasksForWeek": "Tasks for Week",
+    "dailyPlan": "Daily Plan",
+    "noSpecificTask": "No specific task"
+  },
+  "FarmOverview": {
+    "myFarm": "My Farm",
+    "unknownSoil": "Unknown soil",
+    "acres": "Acres"
+  },
+  "RecentSensorReadings": {
+    "title": "Sensor Readings",
+    "noReadings": "No recent sensor data found."
+  },
+  "WeatherCard": {
+    "title": "Current Weather",
+    "description": "Real-time weather conditions and forecast.",
+    "temperature": "Temperature",
+    "humidity": "Humidity",
+    "windSpeed": "Wind Speed",
+    "forecast": "Forecast",
+    "noData": "No weather data available.",
+    "locationNotProvided": "Location not provided.",
+    "fetchFailed": "Could not fetch weather data."
+  },
+  "days": {
+    "monday": "Monday",
+    "tuesday": "Tuesday",
+    "wednesday": "Wednesday",
+    "thursday": "Thursday",
+    "friday": "Friday",
+    "saturday": "Saturday",
+    "sunday": "Sunday"
+  },
+  "soilTypes": {
+    "alluvial": "Alluvial",
+    "black": "Black (Regur)",
+    "redandyellow": "Red and Yellow",
+    "laterite": "Laterite",
+    "sandy": "Sandy",
+    "clay": "Clay",
+    "loamy": "Loamy",
+    "other": "Other"
+  },
+  "weather": {
+    "forecast": {
+      "clear_sky": "Clear sky",
+      "few_clouds": "Few clouds",
+      "scattered_clouds": "Scattered clouds",
+      "broken_clouds": "Broken clouds",
+      "overcast_clouds": "Overcast clouds",
+      "light_rain": "Light rain",
+      "moderate_rain": "Moderate rain",
+      "heavy_intensity_rain": "Heavy intensity rain",
+      "mist": "Mist",
+      "haze": "Haze"
+    }
+  },
+  "stages": {
+    "nurserypreparation": "Nursery Preparation",
+    "nurserymanagement": "Nursery Management",
+    "seedlinghardening": "Seedling Hardening",
+    "mainfieldprep": "Main Field Prep",
+    "transplanting": "Transplanting",
+    "cropestablishment": "Crop Establishment",
+    "vegetativegrowth": "Vegetative Growth",
+    "stakingpruning": "Staking & Pruning",
+    "floweringstage": "Flowering Stage",
+    "fruitdevelopment": "Fruit Development",
+    "fruitmaturation": "Fruit Maturation",
+    "harvesting": "Harvesting"
+  },
+  "markets": {
+    "chennaikoyambedu": "Chennai Koyambedu",
+    "punjabmandi": "Punjab Mandi",
+    "coimbatoremandi": "Coimbatore Mandi",
+    "hosurmandi": "Hosur Mandi",
+    "nashikmandi": "Nashik Mandi",
+    "aiEstimateFormat": "{state} Mandi (AI estimate)"
+  },
+  "states": {
+    "tamilnadu": "Tamil Nadu",
+    "punjab": "Punjab",
+    "maharashtra": "Maharashtra"
   }
 }

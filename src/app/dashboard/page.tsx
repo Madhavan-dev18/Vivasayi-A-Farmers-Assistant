@@ -8,6 +8,7 @@ import { RecentSensorReadings } from '@/components/features/recent-sensor-readin
 import { CropStatus } from '@/components/features/crop-status';
 import { WeatherCard } from '@/components/features/weather-card';
 import { CropPricesCard } from '@/components/features/crop-prices-card';
+import { DailyAssistant } from '@/components/features/daily-assistant';
 import { useLanguage } from '@/context/LanguageContext';
 
 export default function DashboardPage() {
@@ -62,6 +63,8 @@ export default function DashboardPage() {
     <AppShell>
       <div className="p-6 space-y-6">
         <h1 className="text-3xl font-bold">{t('DashboardHomePage.title')}</h1>
+
+        <DailyAssistant />
 
         <FarmOverview />
 

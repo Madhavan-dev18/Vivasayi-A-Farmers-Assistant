@@ -62,13 +62,23 @@ export function FarmOverview() {
         farms.map((farm) => (
           <Card key={farm.id}>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium">{farm.name || 'My Farm'}</CardTitle>
+              <CardTitle className="text-sm font-medium">{farm.name || t('FarmOverview.myFarm')}</CardTitle>
               <MapPin className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{farm.area || '--'} Acres</div>
+              <div className="text-2xl font-bold">
+                {farm.area || '--'} {t('FarmOverview.acres')}
+              </div>
               <p className="text-xs text-muted-foreground flex items-center gap-1 mt-1">
-                <Droplets className="h-3 w-3" /> {farm.soil_type || 'Unknown soil'}
+                <Droplets className="h-3 w-3" />{' '}
+                {(() => {
+                  if (!farm.soil_type) return t('FarmOverview.unknownSoil');
+                  const soilKey = farm.soil_type.toLowerCase().replace(/[^a-z]/g, '');
+                  const translatedSoil = t(`soilTypes.${soilKey}`);
+                  return translatedSoil && translatedSoil !== `soilTypes.${soilKey}`
+                    ? translatedSoil
+                    : farm.soil_type;
+                })()}
               </p>
             </CardContent>
           </Card>

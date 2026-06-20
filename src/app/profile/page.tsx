@@ -28,6 +28,7 @@ import { Badge } from '@/components/ui/badge';
 import React from 'react';
 import { Input } from '@/components/ui/input';
 import { useLanguage } from '@/context/LanguageContext';
+import LanguageSwitcher from '@/components/layout/language-switcher';
 
 export default function ProfilePage() {
   const { t } = useLanguage();
@@ -43,9 +44,9 @@ export default function ProfilePage() {
     email: authUser?.email || '',
     location: 'India',
     avatarUrl: `https://api.dicebear.com/7.x/initials/svg?seed=${authUser?.email || 'F'}`,
-    waterSource: 'Not set',
-    annualBudget: 'Not set',
-    soilType: authUser?.user_metadata?.soilType || 'Not set',
+    waterSource: t('ProfilePage.notSet'),
+    annualBudget: t('ProfilePage.notSet'),
+    soilType: authUser?.user_metadata?.soilType || t('ProfilePage.notSet'),
   };
 
   // Mock soil health records
@@ -89,14 +90,14 @@ export default function ProfilePage() {
           data: { soilReportPath }
         });
         toast({
-          title: "Report Uploaded",
-          description: "Your soil report has been successfully uploaded.",
+          title: t('ProfilePage.reportUploadedTitle'),
+          description: t('ProfilePage.reportUploadedDescription'),
         });
       } catch (error: any) {
         toast({
           variant: 'destructive',
-          title: "Upload Failed",
-          description: error.message || "Failed to upload the soil report.",
+          title: t('ProfilePage.uploadFailedTitle'),
+          description: error.message || t('ProfilePage.uploadFailedDescription'),
         });
       }
     }
@@ -109,60 +110,77 @@ export default function ProfilePage() {
           <h1 className="font-headline text-3xl font-bold">{t('ProfilePage.title')}</h1>
         </div>
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
-          <Card className="lg:col-span-1">
-            <CardHeader>
-              <div className="flex flex-col items-center gap-4 text-center">
-                <Avatar className="h-24 w-24 border-2 border-primary">
-                  <AvatarImage src={user.avatarUrl} alt={user.name} />
-                  <AvatarFallback>
-                    <User className="h-12 w-12" />
-                  </AvatarFallback>
-                </Avatar>
-                <CardTitle className="text-2xl">{user.name}</CardTitle>
-              </div>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="grid gap-1">
-                <p className="text-sm font-medium text-muted-foreground">
-                  {t('ProfilePage.email')}
-                </p>
-                <p>{user.email}</p>
-              </div>
-              <div className="grid gap-1">
-                <p className="text-sm font-medium text-muted-foreground">
-                  {t('ProfilePage.location')}
-                </p>
-                <p>{user.location}</p>
-              </div>
-              <div className="flex items-center gap-2">
-                <Mountain className="h-5 w-5 text-muted-foreground" />
-                <div>
-                  <p className="text-sm font-medium text-muted-foreground">
-                    {t('ProfilePage.soilType')}
-                  </p>
-                  <p>{user.soilType}</p>
+          <div className="space-y-6 lg:col-span-1">
+            <Card>
+              <CardHeader>
+                <div className="flex flex-col items-center gap-4 text-center">
+                  <Avatar className="h-24 w-24 border-2 border-primary">
+                    <AvatarImage src={user.avatarUrl} alt={user.name} />
+                    <AvatarFallback>
+                      <User className="h-12 w-12" />
+                    </AvatarFallback>
+                  </Avatar>
+                  <CardTitle className="text-2xl">{user.name}</CardTitle>
                 </div>
-              </div>
-              <div className="flex items-center gap-2">
-                <Droplets className="h-5 w-5 text-muted-foreground" />
-                <div>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="grid gap-1">
                   <p className="text-sm font-medium text-muted-foreground">
-                    {t('ProfilePage.waterSource')}
+                    {t('ProfilePage.email')}
                   </p>
-                  <p>{user.waterSource}</p>
+                  <p>{user.email}</p>
                 </div>
-              </div>
-              <div className="flex items-center gap-2">
-                <Banknote className="h-5 w-5 text-muted-foreground" />
-                <div>
+                <div className="grid gap-1">
                   <p className="text-sm font-medium text-muted-foreground">
-                    {t('ProfilePage.annualBudget')}
+                    {t('ProfilePage.location')}
                   </p>
-                  <p>{user.annualBudget}</p>
+                  <p>{user.location}</p>
                 </div>
-              </div>
-            </CardContent>
-          </Card>
+                <div className="flex items-center gap-2">
+                  <Mountain className="h-5 w-5 text-muted-foreground" />
+                  <div>
+                    <p className="text-sm font-medium text-muted-foreground">
+                      {t('ProfilePage.soilType')}
+                    </p>
+                    <p>{user.soilType}</p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Droplets className="h-5 w-5 text-muted-foreground" />
+                  <div>
+                    <p className="text-sm font-medium text-muted-foreground">
+                      {t('ProfilePage.waterSource')}
+                    </p>
+                    <p>{user.waterSource}</p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Banknote className="h-5 w-5 text-muted-foreground" />
+                  <div>
+                    <p className="text-sm font-medium text-muted-foreground">
+                      {t('ProfilePage.annualBudget')}
+                    </p>
+                    <p>{user.annualBudget}</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>{t('ProfilePage.appSettingsTitle')}</CardTitle>
+                <CardDescription>{t('ProfilePage.appSettingsDescription')}</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="flex items-center justify-between gap-4">
+                  <span className="text-sm font-medium text-muted-foreground">
+                    {t('ProfilePage.languageLabel')}
+                  </span>
+                  <LanguageSwitcher />
+                </div>
+              </CardContent>
+            </Card>
+          </div>
 
           <Card className="lg:col-span-2">
             <CardHeader className="flex flex-row items-center justify-between">
@@ -212,7 +230,7 @@ export default function ProfilePage() {
                             record.status === 'Active' ? 'default' : 'outline'
                           }
                         >
-                          {record.status}
+                          {record.status === 'Active' ? t('ProfilePage.active') : t('ProfilePage.archived')}
                         </Badge>
                       </TableCell>
                     </TableRow>

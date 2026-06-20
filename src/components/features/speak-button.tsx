@@ -37,7 +37,7 @@ function findVoiceForLang(targetLang: string): SpeechSynthesisVoice | null {
 }
 
 export function SpeakButton({ textToSpeak, lang }: SpeakButtonProps) {
-  const { language } = useLanguage();
+  const { language, t } = useLanguage();
   const { toast } = useToast();
   const [isSpeaking, setIsSpeaking] = useState(false);
 
@@ -47,8 +47,8 @@ export function SpeakButton({ textToSpeak, lang }: SpeakButtonProps) {
     if (typeof window === 'undefined' || !window.speechSynthesis) {
       toast({
         variant: 'destructive',
-        title: 'Not supported',
-        description: 'Your browser does not support text-to-speech.',
+        title: t('SpeakButton.unsupportedTitle'),
+        description: t('SpeakButton.unsupportedDescription'),
       });
       return;
     }
@@ -67,8 +67,8 @@ export function SpeakButton({ textToSpeak, lang }: SpeakButtonProps) {
     const voicesLoaded = window.speechSynthesis.getVoices().length > 0;
     if (voicesLoaded && !voice) {
       toast({
-        title: 'Voice not available on this device',
-        description: `Your device doesn't have a text-to-speech voice installed for ${getLanguageMeta(language).englishName}. The text is still shown above — some devices let you install more voices in their system language settings.`,
+        title: t('SpeakButton.voiceNotAvailableTitle'),
+        description: t('SpeakButton.voiceNotAvailableDescription').replace('{langName}', getLanguageMeta(language).englishName),
       });
       return;
     }
@@ -86,8 +86,8 @@ export function SpeakButton({ textToSpeak, lang }: SpeakButtonProps) {
       if (event.error === 'canceled' || event.error === 'interrupted') return;
       toast({
         variant: 'destructive',
-        title: 'Could not read this aloud',
-        description: 'Something went wrong with text-to-speech. Please try again.',
+        title: t('SpeakButton.errorTitle'),
+        description: t('SpeakButton.errorDescription'),
       });
     };
 

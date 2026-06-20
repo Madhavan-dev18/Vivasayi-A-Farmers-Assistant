@@ -10,6 +10,7 @@ import {
 } from '@/components/ui/card';
 import { LoaderCircle, Sun, Droplets, Wind, Thermometer } from 'lucide-react';
 import { getWeatherData, type WeatherData } from '@/services/weather-service';
+import { useLanguage } from '@/context/LanguageContext';
 
 interface WeatherCardProps {
   location: string;
@@ -17,6 +18,7 @@ interface WeatherCardProps {
 
 // Named export so dashboard import { WeatherCard } works
 export function WeatherCard({ location }: WeatherCardProps) {
+  const { t } = useLanguage();
   const [weather, setWeather] = useState<WeatherData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -25,7 +27,7 @@ export function WeatherCard({ location }: WeatherCardProps) {
     async function fetchWeather() {
       if (!location) {
         setLoading(false);
-        setError('Location not provided.');
+        setError(t('WeatherCard.locationNotProvided'));
         return;
       }
       try {
@@ -34,7 +36,7 @@ export function WeatherCard({ location }: WeatherCardProps) {
         const data = await getWeatherData(location);
         setWeather(data);
       } catch (err) {
-        setError(err instanceof Error ? err.message : 'Could not fetch weather data.');
+        setError(err instanceof Error ? err.message : t('WeatherCard.fetchFailed'));
         console.error('Error fetching weather:', err);
       } finally {
         setLoading(false);
@@ -49,9 +51,9 @@ export function WeatherCard({ location }: WeatherCardProps) {
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <Sun className="size-6 text-primary" />
-          <span>Current Weather – {location}</span>
+          <span>{t('WeatherCard.title')} – {location}</span>
         </CardTitle>
-        <CardDescription>Real-time weather conditions and forecast.</CardDescription>
+        <CardDescription>{t('WeatherCard.description')}</CardDescription>
       </CardHeader>
       <CardContent>
         {loading ? (
@@ -67,35 +69,37 @@ export function WeatherCard({ location }: WeatherCardProps) {
             <div className="flex items-center gap-2">
               <Thermometer className="size-5 text-muted-foreground" />
               <div>
-                <p className="text-muted-foreground">Temperature</p>
+                <p className="text-muted-foreground">{t('WeatherCard.temperature')}</p>
                 <p className="font-bold text-lg">{weather.temperature.toFixed(1)}°C</p>
               </div>
             </div>
             <div className="flex items-center gap-2">
               <Droplets className="size-5 text-muted-foreground" />
               <div>
-                <p className="text-muted-foreground">Humidity</p>
+                <p className="text-muted-foreground">{t('WeatherCard.humidity')}</p>
                 <p className="font-bold text-lg">{weather.humidity}%</p>
               </div>
             </div>
             <div className="flex items-center gap-2">
               <Wind className="size-5 text-muted-foreground" />
               <div>
-                <p className="text-muted-foreground">Wind Speed</p>
+                <p className="text-muted-foreground">{t('WeatherCard.windSpeed')}</p>
                 <p className="font-bold text-lg">{weather.windSpeed.toFixed(1)} km/h</p>
               </div>
             </div>
             <div className="flex items-center gap-2">
               <Sun className="size-5 text-muted-foreground" />
               <div>
-                <p className="text-muted-foreground">Forecast</p>
-                <p className="font-bold text-lg capitalize">{weather.forecast}</p>
+                <p className="text-muted-foreground">{t('WeatherCard.forecast')}</p>
+                <p className="font-bold text-lg capitalize">
+                  {t(`weather.forecast.${weather.forecast.toLowerCase().replace(/ /g, '_')}`) || weather.forecast}
+                </p>
               </div>
             </div>
           </div>
         ) : (
           <div className="flex items-center justify-center h-24">
-            <p className="text-muted-foreground">No weather data available.</p>
+            <p className="text-muted-foreground">{t('WeatherCard.noData')}</p>
           </div>
         )}
       </CardContent>

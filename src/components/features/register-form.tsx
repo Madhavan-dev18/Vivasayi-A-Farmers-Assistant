@@ -17,6 +17,13 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { uploadImage } from '@/lib/storage';
 import { useLanguage } from '@/context/LanguageContext';
 
@@ -86,8 +93,8 @@ export function RegisterForm() {
         }
       } else if (soilReportFile && !authData.session) {
           toast({
-              title: "Report Upload Skipped",
-              description: "Please verify your email first. You can upload the report from your profile later.",
+              title: t('RegisterForm.reportUploadSkippedTitle'),
+              description: t('RegisterForm.reportUploadSkippedDescription'),
           });
       }
 
@@ -174,9 +181,20 @@ export function RegisterForm() {
           render={({ field }) => (
             <FormItem>
               <FormLabel>{t('RegisterForm.soilTypeLabel')}</FormLabel>
-              <FormControl>
-                <Input placeholder={t('RegisterForm.soilTypePlaceholder')} {...field} />
-              </FormControl>
+              <Select onValueChange={field.onChange} defaultValue={field.value}>
+                <FormControl>
+                  <SelectTrigger>
+                    <SelectValue placeholder={t('RegisterForm.soilTypePlaceholder')} />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  <SelectItem value="Alluvial">{t('RegisterForm.alluvial')}</SelectItem>
+                  <SelectItem value="Black">{t('RegisterForm.black')}</SelectItem>
+                  <SelectItem value="Red and Yellow">{t('RegisterForm.redAndYellow')}</SelectItem>
+                  <SelectItem value="Laterite">{t('RegisterForm.laterite')}</SelectItem>
+                  <SelectItem value="Other">{t('RegisterForm.other')}</SelectItem>
+                </SelectContent>
+              </Select>
               <FormMessage />
             </FormItem>
           )}

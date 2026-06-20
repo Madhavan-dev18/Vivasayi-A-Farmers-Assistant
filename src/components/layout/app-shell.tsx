@@ -99,6 +99,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           <div className="flex shrink-0 items-center gap-1 sm:gap-2">
             {!isAuthPage && (
               <>
+                <LanguageSwitcher />
                 <Button asChild variant="ghost" size="icon">
                   <Link href="/profile">
                     <User />

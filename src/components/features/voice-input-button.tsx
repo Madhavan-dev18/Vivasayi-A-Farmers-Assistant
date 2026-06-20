@@ -22,7 +22,7 @@ interface VoiceInputButtonProps {
 }
 
 export function VoiceInputButton({ onTranscript, lang }: VoiceInputButtonProps) {
-  const { language } = useLanguage();
+  const { language, t } = useLanguage();
   const effectiveLang = lang ?? getLanguageMeta(language).speechLang;
   const [isListening, setIsListening] = useState(false);
   const recognitionRef = useRef<any>(null);
@@ -55,11 +55,11 @@ export function VoiceInputButton({ onTranscript, lang }: VoiceInputButtonProps) 
       // more specific, actionable message instead of a generic one.
       const description =
         event.error === 'language-not-supported'
-          ? `Voice input isn't available in ${getLanguageMeta(language).englishName} on this device. Try typing instead, or switch to a language your device supports for voice.`
-          : `Could not start voice recognition: ${event.error}`;
+          ? t('VoiceInputButton.languageNotSupportedDescription').replace('{langName}', getLanguageMeta(language).englishName)
+          : t('VoiceInputButton.genericErrorDescription').replace('{error}', event.error);
       toast({
         variant: 'destructive',
-        title: 'Voice Error',
+        title: t('VoiceInputButton.errorTitle'),
         description,
       });
       setIsListening(false);
@@ -86,8 +86,8 @@ export function VoiceInputButton({ onTranscript, lang }: VoiceInputButtonProps) 
     if (!recognitionRef.current) {
       toast({
         variant: 'destructive',
-        title: 'Unsupported',
-        description: 'Voice input is not supported on your browser.',
+        title: t('VoiceInputButton.unsupportedTitle'),
+        description: t('VoiceInputButton.unsupportedDescription'),
       });
       return;
     }

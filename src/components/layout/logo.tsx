@@ -1,4 +1,7 @@
+import { useLanguage } from '@/context/LanguageContext';
+
 export function Logo() {
+  const { t } = useLanguage();
   return (
     <div className="flex items-center gap-2 p-2">
       <svg
@@ -92,7 +95,7 @@ export function Logo() {
         </g>
       </svg>
       <h2 className="font-headline text-xl font-semibold text-foreground group-data-[collapsible=icon]:hidden">
-        Vivasayi
+        {t('AppShell.logo')}
       </h2>
     </div>
   );

@@ -42,12 +42,12 @@ export default function DiseaseDetection() {
         };
         reader.readAsDataURL(file);
       } else {
-        const err = 'Please upload a valid image file.';
+        const err = t('DiseaseDetectionCard.invalidFileDescription');
         setError(err);
         setImagePreview(null);
         toast({
             variant: 'destructive',
-            title: 'Invalid File',
+            title: t('DiseaseDetectionCard.invalidFileTitle'),
             description: err,
         });
       }
@@ -56,11 +56,11 @@ export default function DiseaseDetection() {
 
   const handleAnalyze = () => {
     if (!imagePreview) {
-      const err = 'Please upload an image first.';
+      const err = t('DiseaseDetectionCard.noImageDescription');
       setError(err);
       toast({
             variant: 'destructive',
-            title: 'No Image',
+            title: t('DiseaseDetectionCard.noImageTitle'),
             description: err,
       });
       return;
@@ -78,12 +78,12 @@ export default function DiseaseDetection() {
         setResult(res);
       } catch (e) {
         console.error(e);
-        const err = 'An error occurred during analysis. Please try again.';
+        const err = t('DiseaseDetectionCard.analysisFailedDescription');
         setError(err);
         toast({
             variant: 'destructive',
-            title: 'Analysis Failed',
-            description: 'An unexpected error occurred. Please try again later.',
+            title: t('DiseaseDetectionCard.analysisFailedTitle'),
+            description: err,
         });
       }
     });

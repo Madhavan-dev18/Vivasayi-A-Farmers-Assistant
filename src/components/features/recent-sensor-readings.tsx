@@ -4,8 +4,10 @@ import React, { useEffect, useState } from 'react';
 import { supabase } from '@/lib/supabase-client';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Activity, Droplets, Thermometer } from 'lucide-react';
+import { useLanguage } from '@/context/LanguageContext';
 
 export function RecentSensorReadings() {
+  const { t } = useLanguage();
   const [readings, setReadings] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -45,12 +47,12 @@ export function RecentSensorReadings() {
     <Card>
       <CardHeader>
         <CardTitle className="text-lg flex items-center gap-2">
-          <Activity className="h-5 w-5" /> Sensor Readings
+          <Activity className="h-5 w-5" /> {t('RecentSensorReadings.title')}
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
         {readings.length === 0 ? (
-          <p className="text-sm text-muted-foreground">No recent sensor data found.</p>
+          <p className="text-sm text-muted-foreground">{t('RecentSensorReadings.noReadings')}</p>
         ) : (
           readings.map((reading, index) => (
             <div key={index} className="flex items-center justify-between border-b pb-2 last:border-0 last:pb-0">
