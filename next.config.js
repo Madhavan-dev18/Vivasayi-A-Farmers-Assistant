@@ -6,10 +6,8 @@ const nextConfig = {
     ignoreBuildErrors: false,
   },
   eslint: {
-    // No ESLint config exists in this repo yet (`next lint` has never been run).
-    // Keep this true until an eslint.config.mjs is added, otherwise builds
-    // will fail on the missing config rather than real lint errors.
-    ignoreDuringBuilds: true,
+    // Enforce ESLint analysis checks during build phase
+    ignoreDuringBuilds: false,
   },
   images: {
     remotePatterns: [
@@ -26,6 +24,14 @@ const nextConfig = {
     '@opentelemetry/instrumentation',
     'require-in-the-middle',
   ],
+  webpack: (config, { webpack }) => {
+    config.plugins.push(
+      new webpack.IgnorePlugin({
+        resourceRegExp: /^@opentelemetry\/exporter-jaeger$/,
+      })
+    );
+    return config;
+  },
 };
 
 module.exports = nextConfig;
