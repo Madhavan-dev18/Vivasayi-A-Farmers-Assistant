@@ -1,26 +1,96 @@
 'use client';
 
-import { Volume2 } from 'lucide-react';
+import { useState } from 'react';
+import { Volume2, VolumeX } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { useLanguage } from '@/context/LanguageContext';
+import { getLanguageMeta } from '@/lib/languages';
+import { useToast } from '@/hooks/use-toast';
 
 interface SpeakButtonProps {
   textToSpeak: string;
+  /**
+   * Optional override. Most callers should omit this — SpeakButton
+   * defaults to the app's currently selected language automatically, so
+   * a response that came back in Tamil gets read aloud in Tamil without
+   * every call site needing to remember to pass it.
+   */
   lang?: string;
 }
 
-export function SpeakButton({ textToSpeak, lang = 'en-US' }: SpeakButtonProps) {
+/**
+ * Finds the best installed voice for a BCP-47 language tag. Browsers
+ * vary in exactly which voices they ship, and many devices have no
+ * voice at all for less-common languages (see the language config notes
+ * in src/lib/languages.ts), so this checks for an exact region match
+ * first, then falls back to a base-language match (e.g. any "hi-*" voice
+ * if "hi-IN" isn't present), and returns null if neither exists.
+ */
+function findVoiceForLang(targetLang: string): SpeechSynthesisVoice | null {
+  const voices = window.speechSynthesis.getVoices();
+  const exact = voices.find((v) => v.lang.toLowerCase() === targetLang.toLowerCase());
+  if (exact) return exact;
+
+  const baseLang = targetLang.split('-')[0].toLowerCase();
+  const baseMatch = voices.find((v) => v.lang.toLowerCase().startsWith(baseLang));
+  return baseMatch ?? null;
+}
+
+export function SpeakButton({ textToSpeak, lang }: SpeakButtonProps) {
+  const { language } = useLanguage();
+  const { toast } = useToast();
+  const [isSpeaking, setIsSpeaking] = useState(false);
+
+  const targetLang = lang ?? getLanguageMeta(language).speechLang;
+
   const handleSpeak = () => {
     if (typeof window === 'undefined' || !window.speechSynthesis) {
-      alert('Sorry, your browser does not support text-to-speech.');
+      toast({
+        variant: 'destructive',
+        title: 'Not supported',
+        description: 'Your browser does not support text-to-speech.',
+      });
       return;
     }
 
     if (window.speechSynthesis.speaking) {
       window.speechSynthesis.cancel();
+      setIsSpeaking(false);
+      return;
+    }
+
+    const voice = findVoiceForLang(targetLang);
+
+    // Voice list can be empty on first call in some browsers (it loads
+    // asynchronously) — only warn if we have a populated voice list AND
+    // still found nothing, not on every call.
+    const voicesLoaded = window.speechSynthesis.getVoices().length > 0;
+    if (voicesLoaded && !voice) {
+      toast({
+        title: 'Voice not available on this device',
+        description: `Your device doesn't have a text-to-speech voice installed for ${getLanguageMeta(language).englishName}. The text is still shown above — some devices let you install more voices in their system language settings.`,
+      });
+      return;
     }
 
     const utterance = new SpeechSynthesisUtterance(textToSpeak);
-    utterance.lang = lang;
+    utterance.lang = targetLang;
+    if (voice) utterance.voice = voice;
+
+    utterance.onstart = () => setIsSpeaking(true);
+    utterance.onend = () => setIsSpeaking(false);
+    utterance.onerror = (event) => {
+      setIsSpeaking(false);
+      // "canceled"/"interrupted" fire when the user taps the button
+      // again to stop speech — that's expected, not an error to report.
+      if (event.error === 'canceled' || event.error === 'interrupted') return;
+      toast({
+        variant: 'destructive',
+        title: 'Could not read this aloud',
+        description: 'Something went wrong with text-to-speech. Please try again.',
+      });
+    };
+
     window.speechSynthesis.speak(utterance);
   };
 
@@ -30,9 +100,9 @@ export function SpeakButton({ textToSpeak, lang = 'en-US' }: SpeakButtonProps) {
       size="icon"
       onClick={handleSpeak}
       className="h-6 w-6 shrink-0 text-muted-foreground hover:text-foreground"
-      aria-label="Read text aloud"
+      aria-label={isSpeaking ? 'Stop reading aloud' : 'Read text aloud'}
     >
-      <Volume2 className="h-4 w-4" />
+      {isSpeaking ? <VolumeX className="h-4 w-4" /> : <Volume2 className="h-4 w-4" />}
     </Button>
   );
 }

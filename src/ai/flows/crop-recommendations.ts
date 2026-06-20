@@ -37,6 +37,14 @@ const CropRecommendationInputSchema = z.object({
     .describe('Current and historical weather data for the location, including temperature, rainfall, and sunlight.'),
   district: z.string().describe('The district where the farm is located.'),
   season: z.string().describe('The current farming season (e.g., Kharif, Rabi).'),
+  topography: z.string().optional().describe('The slope or topography of the field.'),
+  cropHistory1: z.string().optional().describe('Crop grown in the last season.'),
+  cropHistory2: z.string().optional().describe('Crop grown 2 seasons ago.'),
+  cropHistory3: z.string().optional().describe('Crop grown 3 seasons ago.'),
+  language: z
+    .string()
+    .optional()
+    .describe('The language the response should be written in (e.g. "Tamil", "Hindi", "English"). Defaults to English if not specified.'),
 });
 export type CropRecommendationInput = z.infer<typeof CropRecommendationInputSchema>;
 
@@ -72,16 +80,21 @@ Soil Analysis: {{{soilAnalysis}}}
 Weather Data: {{{weatherData}}}
 District: {{{district}}}
 Season: {{{season}}}
+Topography: {{#if topography}}{{{topography}}}{{else}}Not specified{{/if}}
+Recent Crop History: {{#if cropHistory1}}{{{cropHistory1}}}{{else}}None{{/if}}, {{#if cropHistory2}}{{{cropHistory2}}}{{else}}None{{/if}}, {{#if cropHistory3}}{{{cropHistory3}}}{{else}}None{{/if}}
 
 Consider the following factors when making your recommendations:
 
 *   **Historical Performance**: What crops have high production in the historical data for this district and season?
-*   **Soil Suitability**: Match the crop requirements with the soil analysis data.
+*   **Soil Suitability**: Match the crop requirements with the soil analysis data and topography.
 *   **Climate Compatibility**: Ensure the crops are suitable for the local weather conditions.
+*   **Crop Rotation**: Avoid recommending the exact same crops recently grown to prevent soil depletion.
 *   **Market Demand & Profitability**: Prioritize crops that are generally profitable.
 *   **Risk Factors**: Mention potential risks.
 
 Provide detailed planting instructions for the recommended crops and a brief risk assessment.
+
+{{#if language}}Write your entire response in {{language}}, using that language's native script (not a Latin-letter transliteration).{{/if}}
 `,
 });
 

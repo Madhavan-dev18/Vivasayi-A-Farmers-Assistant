@@ -18,10 +18,8 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { uploadImage } from '@/lib/storage';
+import { useLanguage } from '@/context/LanguageContext';
 
-// ----------------------------------------------------------------------
-// 1. ZOD SCHEMA
-// ----------------------------------------------------------------------
 const registerSchema = z.object({
   name: z.string().min(2, 'Name must be at least 2 characters'),
   email: z.string().email('Please enter a valid email address'),
@@ -32,17 +30,9 @@ const registerSchema = z.object({
 
 type FormData = z.infer<typeof registerSchema>;
 
-const t = {
-  nameLabel: 'Full Name',
-  emailLabel: 'Email Address',
-  passwordLabel: 'Password',
-  soilTypeLabel: 'Primary Soil Type',
-  soilReportLabel: 'Upload Soil Report (Optional)',
-  submit: 'Sign Up for Vivasayi',
-};
-
 export function RegisterForm() {
   const { toast } = useToast();
+  const { t } = useLanguage();
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
 
@@ -56,9 +46,6 @@ export function RegisterForm() {
     },
   });
 
-  // ----------------------------------------------------------------------
-  // SUBMIT HANDLER
-  // ----------------------------------------------------------------------
   const onSubmit = async (data: FormData) => {
     setIsLoading(true);
     try {
@@ -79,7 +66,7 @@ export function RegisterForm() {
       // the storage PATH (not a public URL — the bucket is private), and
       // generate a signed URL on demand later via getSignedFileUrl().
       const soilReportFile: File | undefined = data.soilReport?.[0];
-      if (soilReportFile && authData.user) {
+      if (soilReportFile && authData.user && authData.session) {
         try {
           const soilReportPath = await uploadImage(
             soilReportFile,
@@ -92,12 +79,16 @@ export function RegisterForm() {
         } catch (uploadError) {
           console.error('Soil report upload failed:', uploadError);
           toast({
-            title: 'Soil Report Upload Failed',
-            description:
-              'Your account was created, but the soil report could not be uploaded. You can add it later from your profile.',
+            title: t('RegisterForm.uploadFailedTitle'),
+            description: t('RegisterForm.uploadFailedDescription'),
             variant: 'destructive',
           });
         }
+      } else if (soilReportFile && !authData.session) {
+          toast({
+              title: "Report Upload Skipped",
+              description: "Please verify your email first. You can upload the report from your profile later.",
+          });
       }
 
       form.reset();
@@ -109,23 +100,22 @@ export function RegisterForm() {
       // middleware. Branch on session presence instead of assuming one.
       if (authData.session) {
         toast({
-          title: 'Registration Successful 🌾',
-          description: 'Your account has been created successfully.',
+          title: t('RegisterForm.successTitle'),
+          description: t('RegisterForm.successDescription'),
         });
         router.push('/dashboard');
       } else {
         toast({
-          title: 'Check your email 📧',
-          description:
-            "We've sent a confirmation link to your email. Verify your account, then log in.",
+          title: t('RegisterForm.checkEmailTitle'),
+          description: t('RegisterForm.checkEmailDescription'),
         });
         router.push('/login');
       }
     } catch (error: any) {
       console.error('Signup failed:', error);
       toast({
-        title: 'Registration Error',
-        description: error.message || 'Failed to register. Please try again.',
+        title: t('RegisterForm.errorTitle'),
+        description: error.message || t('RegisterForm.errorDescription'),
         variant: 'destructive',
       });
     } finally {
@@ -141,9 +131,9 @@ export function RegisterForm() {
           name="name"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>{t.nameLabel}</FormLabel>
+              <FormLabel>{t('RegisterForm.nameLabel')}</FormLabel>
               <FormControl>
-                <Input placeholder="Enter your full name" {...field} />
+                <Input placeholder={t('RegisterForm.namePlaceholder')} {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -155,9 +145,9 @@ export function RegisterForm() {
           name="email"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>{t.emailLabel}</FormLabel>
+              <FormLabel>{t('RegisterForm.emailLabel')}</FormLabel>
               <FormControl>
-                <Input type="email" placeholder="farmer@vivasayi.com" {...field} />
+                <Input type="email" placeholder={t('RegisterForm.emailPlaceholder')} {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -169,9 +159,9 @@ export function RegisterForm() {
           name="password"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>{t.passwordLabel}</FormLabel>
+              <FormLabel>{t('RegisterForm.passwordLabel')}</FormLabel>
               <FormControl>
-                <Input type="password" placeholder="Create a secure password" {...field} />
+                <Input type="password" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -183,9 +173,9 @@ export function RegisterForm() {
           name="soilType"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>{t.soilTypeLabel}</FormLabel>
+              <FormLabel>{t('RegisterForm.soilTypeLabel')}</FormLabel>
               <FormControl>
-                <Input placeholder="e.g., Red Soil, Black Cotton" {...field} />
+                <Input placeholder={t('RegisterForm.soilTypePlaceholder')} {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -197,7 +187,7 @@ export function RegisterForm() {
           name="soilReport"
           render={({ field: { value, onChange, ...fieldProps } }) => (
             <FormItem>
-              <FormLabel>{t.soilReportLabel}</FormLabel>
+              <FormLabel>{t('RegisterForm.soilReportLabel')}</FormLabel>
               <FormControl>
                 <Input
                   {...fieldProps}
@@ -214,7 +204,7 @@ export function RegisterForm() {
         />
 
         <Button type="submit" className="w-full" disabled={isLoading}>
-          {isLoading ? 'Creating Account...' : t.submit}
+          {isLoading ? t('RegisterForm.creatingAccount') : t('RegisterForm.registerButton')}
         </Button>
       </form>
     </Form>

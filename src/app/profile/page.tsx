@@ -12,6 +12,10 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { User, Upload, Droplets, Banknote, Mountain } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { useAuth } from '@/context/AuthContext';
+import { uploadImage } from '@/lib/storage';
+import { supabase } from '@/lib/supabase-client';
+import { useToast } from '@/hooks/use-toast';
 import {
   Table,
   TableBody,
@@ -23,34 +27,25 @@ import {
 import { Badge } from '@/components/ui/badge';
 import React from 'react';
 import { Input } from '@/components/ui/input';
+import { useLanguage } from '@/context/LanguageContext';
 
 export default function ProfilePage() {
-  const t = {
-    title: "My Profile",
-    email: "Email",
-    location: "Location",
-    soilHealthTitle: "Annual Soil Health Record",
-    soilHealthDescription: "Keep your soil profile updated for accurate recommendations.",
-    uploadReportButton: "Upload New Report",
-    reportYear: "Year",
-    status: "Status",
-    waterSource: "Primary Water Source",
-    annualBudget: "Annual Farming Budget",
-    soilType: "Primary Soil Type"
-  };
+  const { t } = useLanguage();
 
   const fileInputRef = React.useRef<HTMLInputElement>(null);
   const [fileName, setFileName] = React.useState('');
 
-  // Mock user data
+  const { user: authUser } = useAuth();
+  const { toast } = useToast();
+
   const user = {
-    name: 'Bharat Kumar',
-    email: 'bharat@example.com',
-    location: 'Punjab, India',
-    avatarUrl: 'https://picsum.photos/seed/user-avatar/200/200',
-    waterSource: 'Well/Borewell',
-    annualBudget: '₹50,000 - ₹2 Lakhs',
-    soilType: 'Alluvial',
+    name: authUser?.user_metadata?.name || 'Farmer',
+    email: authUser?.email || '',
+    location: 'India',
+    avatarUrl: `https://api.dicebear.com/7.x/initials/svg?seed=${authUser?.email || 'F'}`,
+    waterSource: 'Not set',
+    annualBudget: 'Not set',
+    soilType: authUser?.user_metadata?.soilType || 'Not set',
   };
 
   // Mock soil health records
@@ -84,12 +79,26 @@ export default function ProfilePage() {
     },
   ];
   
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
-    if (file) {
+    if (file && authUser) {
       setFileName(file.name);
-      // Here you would typically handle the file upload
-      console.log('Uploading file:', file.name);
+      try {
+        const soilReportPath = await uploadImage(file, authUser.id, 'soil-reports');
+        await supabase.auth.updateUser({
+          data: { soilReportPath }
+        });
+        toast({
+          title: "Report Uploaded",
+          description: "Your soil report has been successfully uploaded.",
+        });
+      } catch (error: any) {
+        toast({
+          variant: 'destructive',
+          title: "Upload Failed",
+          description: error.message || "Failed to upload the soil report.",
+        });
+      }
     }
   };
 
@@ -97,7 +106,7 @@ export default function ProfilePage() {
     <AppShell>
       <div className="flex-1 space-y-6 p-4 md:p-6">
         <div className="mb-6">
-          <h1 className="font-headline text-3xl font-bold">{t.title}</h1>
+          <h1 className="font-headline text-3xl font-bold">{t('ProfilePage.title')}</h1>
         </div>
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
           <Card className="lg:col-span-1">
@@ -115,13 +124,13 @@ export default function ProfilePage() {
             <CardContent className="space-y-4">
               <div className="grid gap-1">
                 <p className="text-sm font-medium text-muted-foreground">
-                  {t.email}
+                  {t('ProfilePage.email')}
                 </p>
                 <p>{user.email}</p>
               </div>
               <div className="grid gap-1">
                 <p className="text-sm font-medium text-muted-foreground">
-                  {t.location}
+                  {t('ProfilePage.location')}
                 </p>
                 <p>{user.location}</p>
               </div>
@@ -129,7 +138,7 @@ export default function ProfilePage() {
                 <Mountain className="h-5 w-5 text-muted-foreground" />
                 <div>
                   <p className="text-sm font-medium text-muted-foreground">
-                    {t.soilType}
+                    {t('ProfilePage.soilType')}
                   </p>
                   <p>{user.soilType}</p>
                 </div>
@@ -138,7 +147,7 @@ export default function ProfilePage() {
                 <Droplets className="h-5 w-5 text-muted-foreground" />
                 <div>
                   <p className="text-sm font-medium text-muted-foreground">
-                    {t.waterSource}
+                    {t('ProfilePage.waterSource')}
                   </p>
                   <p>{user.waterSource}</p>
                 </div>
@@ -147,7 +156,7 @@ export default function ProfilePage() {
                 <Banknote className="h-5 w-5 text-muted-foreground" />
                 <div>
                   <p className="text-sm font-medium text-muted-foreground">
-                    {t.annualBudget}
+                    {t('ProfilePage.annualBudget')}
                   </p>
                   <p>{user.annualBudget}</p>
                 </div>
@@ -158,8 +167,8 @@ export default function ProfilePage() {
           <Card className="lg:col-span-2">
             <CardHeader className="flex flex-row items-center justify-between">
               <div>
-                <CardTitle>{t.soilHealthTitle}</CardTitle>
-                <CardDescription>{t.soilHealthDescription}</CardDescription>
+                <CardTitle>{t('ProfilePage.soilHealthTitle')}</CardTitle>
+                <CardDescription>{t('ProfilePage.soilHealthDescription')}</CardDescription>
               </div>
               <>
                  <Input
@@ -171,7 +180,7 @@ export default function ProfilePage() {
                   />
                 <Button onClick={() => fileInputRef.current?.click()}>
                   <Upload className="mr-2" />
-                  {t.uploadReportButton}
+                  {t('ProfilePage.uploadReportButton')}
                 </Button>
               </>
             </CardHeader>
@@ -179,12 +188,12 @@ export default function ProfilePage() {
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead>{t.reportYear}</TableHead>
+                    <TableHead>{t('ProfilePage.reportYear')}</TableHead>
                     <TableHead>N (kg/ha)</TableHead>
                     <TableHead>P (kg/ha)</TableHead>
                     <TableHead>K (kg/ha)</TableHead>
                     <TableHead>pH</TableHead>
-                    <TableHead className="text-right">{t.status}</TableHead>
+                    <TableHead className="text-right">{t('ProfilePage.status')}</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>

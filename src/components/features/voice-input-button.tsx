@@ -4,6 +4,8 @@ import { useEffect, useRef, useState } from 'react';
 import { Mic, MicOff } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
+import { useLanguage } from '@/context/LanguageContext';
+import { getLanguageMeta } from '@/lib/languages';
 
 // Forcing TypeScript to recognize DOM Speech APIs
 declare global {
@@ -15,10 +17,13 @@ declare global {
 
 interface VoiceInputButtonProps {
   onTranscript: (transcript: string) => void;
+  /** Optional override — defaults to the app's currently selected language. */
   lang?: string;
 }
 
-export function VoiceInputButton({ onTranscript, lang = 'en-US' }: VoiceInputButtonProps) {
+export function VoiceInputButton({ onTranscript, lang }: VoiceInputButtonProps) {
+  const { language } = useLanguage();
+  const effectiveLang = lang ?? getLanguageMeta(language).speechLang;
   const [isListening, setIsListening] = useState(false);
   const recognitionRef = useRef<any>(null);
   const { toast } = useToast();
@@ -35,7 +40,7 @@ export function VoiceInputButton({ onTranscript, lang = 'en-US' }: VoiceInputBut
     const recognition = new SpeechRecognition();
     recognition.continuous = false;
     recognition.interimResults = false;
-    recognition.lang = lang;
+    recognition.lang = effectiveLang;
 
     recognition.onresult = (event: any) => {
       const transcript = event.results[0][0].transcript;
@@ -44,10 +49,18 @@ export function VoiceInputButton({ onTranscript, lang = 'en-US' }: VoiceInputBut
 
     recognition.onerror = (event: any) => {
       console.error('Speech recognition error', event.error);
+      // "language-not-supported" means the device/browser can't
+      // recognize speech in the selected language at all — different
+      // from other errors (no-speech, network, aborted), so it gets a
+      // more specific, actionable message instead of a generic one.
+      const description =
+        event.error === 'language-not-supported'
+          ? `Voice input isn't available in ${getLanguageMeta(language).englishName} on this device. Try typing instead, or switch to a language your device supports for voice.`
+          : `Could not start voice recognition: ${event.error}`;
       toast({
         variant: 'destructive',
         title: 'Voice Error',
-        description: `Could not start voice recognition: ${event.error}`,
+        description,
       });
       setIsListening(false);
     };
@@ -67,7 +80,7 @@ export function VoiceInputButton({ onTranscript, lang = 'en-US' }: VoiceInputBut
         }
       }
     };
-  }, [lang, onTranscript, toast]);
+  }, [effectiveLang, language, onTranscript, toast]);
 
   const handleToggleListening = () => {
     if (!recognitionRef.current) {

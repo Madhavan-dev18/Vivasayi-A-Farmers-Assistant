@@ -8,8 +8,10 @@ import { RecentSensorReadings } from '@/components/features/recent-sensor-readin
 import { CropStatus } from '@/components/features/crop-status';
 import { WeatherCard } from '@/components/features/weather-card';
 import { CropPricesCard } from '@/components/features/crop-prices-card';
+import { useLanguage } from '@/context/LanguageContext';
 
 export default function DashboardPage() {
+  const { t } = useLanguage();
   // Default to a sensible fallback; replaced with the user's actual farm
   // district as soon as it loads, instead of being hardcoded to Punjab.
   const [location, setLocation] = useState('Tamil Nadu');
@@ -59,7 +61,7 @@ export default function DashboardPage() {
   return (
     <AppShell>
       <div className="p-6 space-y-6">
-        <h1 className="text-3xl font-bold">Farmer Dashboard</h1>
+        <h1 className="text-3xl font-bold">{t('DashboardHomePage.title')}</h1>
 
         <FarmOverview />
 

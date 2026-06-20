@@ -4,8 +4,16 @@ import React, { useState, useTransition, useRef } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-import * as LucideIcons from 'lucide-react';
-import { BrainCircuit, LoaderCircle, Calendar, FileDown, Upload, Save, type LucideIcon } from 'lucide-react';
+import { 
+  BrainCircuit, LoaderCircle, Calendar, FileDown, Upload, Save, Check,
+  Sprout, Sun, Droplets, Scissors, Thermometer, Wind, Zap, Bug, Leaf, Shovel, Tractor, CloudRain, CheckCircle2,
+  type LucideIcon 
+} from 'lucide-react';
+
+const iconMap: Record<string, LucideIcon> = {
+  Sprout, Sun, Droplets, Scissors, Check, Thermometer, Wind, Zap, Bug, Leaf,
+  Shovel, Tractor, CloudRain, CheckCircle2, BrainCircuit, Calendar
+};
 
 import { getPersonalizedCultivationPlan } from '@/ai/flows/personalized-space-flow';
 import { 
@@ -36,6 +44,8 @@ import { SpeakButton } from './speak-button';
 import WeatherCard from './weather-card';
 import { useAuth } from '@/context/AuthContext';
 import { supabase } from '@/lib/supabase-client';
+import { useLanguage } from '@/context/LanguageContext';
+import { getLanguageMeta } from '@/lib/languages';
 
 const formSchema = z.object({
   crop: z.string().min(2, { message: 'Please specify the crop.' }),
@@ -56,55 +66,16 @@ function getWeekOfSowing(sowingDate: string): number {
 }
 
 const DynamicIcon = ({ name, className }: { name: string; className?: string }) => {
-    const Icon = LucideIcons[name as keyof typeof LucideIcons] as LucideIcon | undefined;
-    if (!Icon || typeof Icon !== 'function') {
-        return <LucideIcons.Check className={cn("size-8 text-muted-foreground", className)} />;
+    const Icon = iconMap[name];
+    if (!Icon) {
+        return <Check className={cn("size-8 text-muted-foreground", className)} />;
     }
     return <Icon className={cn("size-8", className)} />;
 };
 
 
 export default function PersonalizedSpace() {
-  const t = {
-    formTitle: "Cultivation Details",
-    formDescription: "Provide your farm's details to generate a plan.",
-    cropLabel: "Crop to Cultivate",
-    cropPlaceholder: "e.g., Tomato, Wheat",
-    districtLabel: "District",
-    districtPlaceholder: "Select your district",
-    sowingDateLabel: "Planned Sowing Date",
-    sowingDateDescription: "This helps track your weekly progress.",
-    soilReportLabel: "Soil Health Report (Optional)",
-    soilReportPlaceholder: "Upload PDF or Image",
-    soilReportDescription: "Uploading a report provides more accurate advice.",
-    getPlan: "Generate Cultivation Plan",
-    generatingPlan: "Generating Plan...",
-    planTitle: "Your Cultivation Plan",
-    planDescription: "A weekly guide from sowing to harvest.",
-    downloadPdf: "Download as PDF",
-    savePlan: "Save Plan",
-    downloading: "Downloading...",
-    saving: "Saving...",
-    week: "Week",
-    currentWeek: "Current Week",
-    placeholder: "Your personalized cultivation plan will appear here once generated.",
-    disclaimer: "This is an AI-generated plan. Always adapt based on real-world field conditions and consult local experts.",
-    tasksForWeek: "Tasks for Week",
-    dailyPlan: "Daily Plan",
-    listenToTasks: "Listen to tasks",
-    success: {
-        planSaved: "Plan Saved!",
-        notificationsEnabled: "Daily task notifications have been enabled.",
-        pdfDownloaded: "PDF downloaded successfully."
-    },
-    error: {
-      title: "Error",
-      planFailed: "Failed to generate cultivation plan. Please try again.",
-      pdfFailed: "Failed to generate PDF. Please try again later.",
-      unexpected: "An unexpected error occurred. Please try again.",
-      modelOverloaded: "Our AI service is experiencing high demand right now. Please try again in a minute."
-    }
-  };
+  const { t, language } = useLanguage();
   const [isPending, startTransition] = useTransition();
   const [isDownloading, setIsDownloading] = useState(false);
   const [result, setResult] = useState<PersonalizedCultivationPlanOutput | null>(null);
@@ -155,6 +126,7 @@ export default function PersonalizedSpace() {
           // Explicitly pass the boolean to satisfy the new schema
           isSoilReportFile: !!data.soilReport && data.soilReport.startsWith('data:'),
           userProfile: "User from " + data.district + ", growing " + data.crop,
+          language: getLanguageMeta(language).englishName,
         });
         
         if (res?.cultivationPlan?.length) {
@@ -163,8 +135,8 @@ export default function PersonalizedSpace() {
         } else {
           toast({
             variant: 'destructive',
-            title: t.error.title,
-            description: t.error.planFailed,
+            title: t('PersonalizedSpace.error.title'),
+            description: t('PersonalizedSpace.error.planFailed'),
           });
         }
       } catch (error) {
@@ -173,10 +145,10 @@ export default function PersonalizedSpace() {
         const isOverloaded = /503|overloaded|high demand/i.test(message);
         toast({
           variant: 'destructive',
-          title: t.error.title,
+          title: t('PersonalizedSpace.error.title'),
           description: isOverloaded
-            ? t.error.modelOverloaded
-            : t.error.unexpected,
+            ? t('PersonalizedSpace.error.modelOverloaded')
+            : t('PersonalizedSpace.error.unexpected'),
         });
       }
     });
@@ -199,15 +171,23 @@ export default function PersonalizedSpace() {
       if (error) throw error;
 
       toast({
-        title: t.success.planSaved,
-        description: t.success.notificationsEnabled,
+        title: t('PersonalizedSpace.success.planSaved'),
+        description: t('PersonalizedSpace.success.notificationsEnabled'),
       });
-    } catch (error) {
-      console.error('Error saving plan:', error);
+    } catch (error: any) {
+      // Supabase's PostgrestError is a plain object (not a native Error),
+      // so logging it directly can render as {} depending on how the
+      // console/dev overlay serializes it. Pull out the actual fields.
+      console.error('Error saving plan:', {
+        message: error?.message,
+        details: error?.details,
+        hint: error?.hint,
+        code: error?.code,
+      });
       toast({
         variant: 'destructive',
         title: 'Save Failed',
-        description: 'Failed to save cultivation plan. Please try again.',
+        description: error?.message || 'Failed to save cultivation plan. Please try again.',
       });
     }
   };
@@ -253,15 +233,15 @@ export default function PersonalizedSpace() {
       pdf.save(`vivasayi-cultivation-plan-${formData.crop || 'plan'}.pdf`);
 
       toast({
-        title: t.success.planSaved,
-        description: t.success.pdfDownloaded,
+        title: t('PersonalizedSpace.success.planSaved'),
+        description: t('PersonalizedSpace.success.pdfDownloaded'),
       });
     } catch (error) {
       console.error('Error generating PDF:', error);
       toast({
         variant: 'destructive',
-        title: t.error.title,
-        description: t.error.pdfFailed,
+        title: t('PersonalizedSpace.error.title'),
+        description: t('PersonalizedSpace.error.pdfFailed'),
       });
     } finally {
       setIsDownloading(false);
@@ -280,8 +260,8 @@ export default function PersonalizedSpace() {
       <div className="lg:col-span-1 space-y-8">
         <Card>
           <CardHeader>
-            <CardTitle>{t.formTitle}</CardTitle>
-            <CardDescription>{t.formDescription}</CardDescription>
+            <CardTitle>{t('PersonalizedSpace.formTitle')}</CardTitle>
+            <CardDescription>{t('PersonalizedSpace.formDescription')}</CardDescription>
           </CardHeader>
           <CardContent>
             <Form {...form}>
@@ -291,9 +271,9 @@ export default function PersonalizedSpace() {
                   name="crop"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>{t.cropLabel}</FormLabel>
+                      <FormLabel>{t('PersonalizedSpace.cropLabel')}</FormLabel>
                       <FormControl>
-                        <Input placeholder={t.cropPlaceholder} {...field} />
+                        <Input placeholder={t('PersonalizedSpace.cropPlaceholder')} {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -304,11 +284,11 @@ export default function PersonalizedSpace() {
                   name="district"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>{t.districtLabel}</FormLabel>
+                      <FormLabel>{t('PersonalizedSpace.districtLabel')}</FormLabel>
                       <Select onValueChange={field.onChange} defaultValue={field.value}>
                         <FormControl>
                           <SelectTrigger>
-                            <SelectValue placeholder={t.districtPlaceholder} />
+                            <SelectValue placeholder={t('PersonalizedSpace.districtPlaceholder')} />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
@@ -324,11 +304,11 @@ export default function PersonalizedSpace() {
                   name="sowingDate"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>{t.sowingDateLabel}</FormLabel>
+                      <FormLabel>{t('PersonalizedSpace.sowingDateLabel')}</FormLabel>
                       <FormControl>
                         <Input type="date" {...field} />
                       </FormControl>
-                       <FormDescription>{t.sowingDateDescription}</FormDescription>
+                       <FormDescription>{t('PersonalizedSpace.sowingDateDescription')}</FormDescription>
                       <FormMessage />
                     </FormItem>
                   )}
@@ -338,7 +318,7 @@ export default function PersonalizedSpace() {
                     name="soilReport"
                     render={() => (
                         <FormItem>
-                        <FormLabel>{t.soilReportLabel}</FormLabel>
+                        <FormLabel>{t('PersonalizedSpace.soilReportLabel')}</FormLabel>
                         <FormControl>
                             <div>
                             <Input
@@ -355,20 +335,20 @@ export default function PersonalizedSpace() {
                                 onClick={() => fileInputRef.current?.click()}
                             >
                                 <Upload className="mr-2" />
-                                {fileName || t.soilReportPlaceholder}
+                                {fileName || t('PersonalizedSpace.soilReportPlaceholder')}
                             </Button>
                             </div>
                         </FormControl>
-                        <FormDescription>{t.soilReportDescription}</FormDescription>
+                        <FormDescription>{t('PersonalizedSpace.soilReportDescription')}</FormDescription>
                         <FormMessage />
                         </FormItem>
                     )}
                 />
                 <Button type="submit" disabled={isPending} className="w-full">
                   {isPending ? (
-                    <><LoaderCircle className="mr-2 h-4 w-4 animate-spin" />{t.generatingPlan}</>
+                    <><LoaderCircle className="mr-2 h-4 w-4 animate-spin" />{t('PersonalizedSpace.generatingPlan')}</>
                   ) : (
-                    <><BrainCircuit className="mr-2 h-4 w-4" />{t.getPlan}</>
+                    <><BrainCircuit className="mr-2 h-4 w-4" />{t('PersonalizedSpace.getPlan')}</>
                   )}
                 </Button>
               </form>
@@ -383,20 +363,20 @@ export default function PersonalizedSpace() {
       <div className="lg:col-span-2">
         <Card className="h-full flex flex-col">
           <CardHeader>
-            <div className="flex justify-between items-start">
+            <div className="flex flex-col gap-3 sm:flex-row sm:justify-between sm:items-start">
                 <div>
-                    <CardTitle>{t.planTitle}</CardTitle>
-                    <CardDescription>{t.planDescription}</CardDescription>
+                    <CardTitle>{t('PersonalizedSpace.planTitle')}</CardTitle>
+                    <CardDescription>{t('PersonalizedSpace.planDescription')}</CardDescription>
                 </div>
                  {result && (
-                    <div className="flex gap-2">
+                    <div className="flex flex-wrap gap-2">
                          <Button variant="outline" onClick={handleDownloadPdf} disabled={isDownloading}>
                             <FileDown className="mr-2 h-4 w-4"/>
-                            {isDownloading ? t.downloading : t.downloadPdf}
+                            {isDownloading ? t('PersonalizedSpace.downloading') : t('PersonalizedSpace.downloadPdf')}
                         </Button>
                          <Button variant="outline" onClick={handleSavePlan}>
                             <Save className="mr-2 h-4 w-4"/>
-                            {t.savePlan}
+                            {t('PersonalizedSpace.savePlan')}
                         </Button>
                     </div>
                 )}
@@ -406,14 +386,14 @@ export default function PersonalizedSpace() {
             {isPending && (
               <div className="flex-1 flex flex-col items-center justify-center gap-2 text-muted-foreground">
                 <LoaderCircle className="h-8 w-8 animate-spin text-primary" />
-                <span>{t.generatingPlan}</span>
+                <span>{t('PersonalizedSpace.generatingPlan')}</span>
               </div>
             )}
             {result && result.cultivationPlan && (
                 <div ref={planContentRef} className="space-y-4">
                     <div>
                         <div className="flex justify-between items-center mb-2">
-                            <span className="text-sm font-medium">{t.week} {Math.min(currentWeek, totalWeeks)} of {totalWeeks}</span>
+                            <span className="text-sm font-medium">{t('PersonalizedSpace.week')} {Math.min(currentWeek, totalWeeks)} of {totalWeeks}</span>
                         </div>
                         <Progress value={progressPercentage} />
                     </div>
@@ -440,9 +420,9 @@ export default function PersonalizedSpace() {
                                 >
                                     <div className="relative">
                                         <DynamicIcon name={week.iconName} />
-                                        {isPast && <LucideIcons.CheckCircle2 className="absolute -top-2 -right-2 size-5 text-green-500 bg-white rounded-full" />}
+                                        {isPast && <CheckCircle2 className="absolute -top-2 -right-2 size-5 text-green-500 bg-white rounded-full" />}
                                     </div>
-                                    <span className="font-bold text-sm">{t.week} {weekNumber}</span>
+                                    <span className="font-bold text-sm">{t('PersonalizedSpace.week')} {weekNumber}</span>
                                     <span className="text-xs text-center truncate w-full">{week.stage}</span>
                                 </button>
                                 );
@@ -454,15 +434,15 @@ export default function PersonalizedSpace() {
                     {selectedWeekData && (
                         <Card className="mt-4 bg-muted/50">
                             <CardHeader>
-                                <CardTitle className="flex items-center justify-between">
-                                    <span>{t.tasksForWeek} {selectedWeek}: {selectedWeekData.stage}</span>
-                                    <SpeakButton textToSpeak={`${t.tasksForWeek} ${selectedWeek}. ${selectedWeekData.stage}. ${selectedWeekData.tasks}`} />
+                                <CardTitle className="flex flex-wrap items-center justify-between gap-2">
+                                    <span>{t('PersonalizedSpace.tasksForWeek')} {selectedWeek}: {selectedWeekData.stage}</span>
+                                    <SpeakButton textToSpeak={`${t('PersonalizedSpace.tasksForWeek')} ${selectedWeek}. ${selectedWeekData.stage}. ${selectedWeekData.tasks}`} />
                                 </CardTitle>
                             </CardHeader>
                             <CardContent>
                                 <p className="text-sm text-muted-foreground">{selectedWeekData.tasks}</p>
                                 <div className="mt-4">
-                                  <h4 className="font-semibold mb-2">{t.dailyPlan}</h4>
+                                  <h4 className="font-semibold mb-2">{t('PersonalizedSpace.dailyPlan')}</h4>
                                   <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-2 text-center">
                                     {selectedWeekData.dailyTasks.map((day: DailyTask, index: number) => (
                                       <div key={index} className="flex flex-col items-center p-2 rounded-lg border bg-background/50">
@@ -483,13 +463,13 @@ export default function PersonalizedSpace() {
             {!isPending && !result && (
               <div className="flex-1 flex flex-col items-center justify-center text-center text-muted-foreground">
                 <Calendar className="mx-auto h-12 w-12" />
-                <p className="mt-4">{t.placeholder}</p>
+                <p className="mt-4">{t('PersonalizedSpace.placeholder')}</p>
               </div>
             )}
           </CardContent>
           {result && (
             <CardFooter>
-                <p className="text-xs text-muted-foreground">{t.disclaimer}</p>
+                <p className="text-xs text-muted-foreground">{t('PersonalizedSpace.disclaimer')}</p>
             </CardFooter>
           )}
         </Card>

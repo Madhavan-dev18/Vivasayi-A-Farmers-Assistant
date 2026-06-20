@@ -31,6 +31,7 @@ import {
 } from '@/components/ui/select';
 import { useToast } from '@/hooks/use-toast';
 import { indianDistricts } from '@/lib/indian-districts';
+import { useLanguage } from '@/context/LanguageContext';
 
 const formSchema = z.object({
   farmName: z.string().min(2, { message: 'Farm name must be at least 2 characters.' }),
@@ -47,10 +48,9 @@ type FormData = z.infer<typeof formSchema>;
 export default function AddFarmPage() {
   const { user } = useAuth();
   const { toast } = useToast();
+  const { t } = useLanguage();
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
-
-
 
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
@@ -69,8 +69,8 @@ export default function AddFarmPage() {
     if (!user) {
       toast({
         variant: 'destructive',
-        title: 'Authentication Required',
-        description: 'Please log in to add a farm.',
+        title: t('FarmsAddPage.authRequiredTitle'),
+        description: t('FarmsAddPage.authRequiredDescription'),
       });
       return;
     }
@@ -91,7 +91,7 @@ export default function AddFarmPage() {
       if (error) throw error;
 
       toast({
-        title: 'Farm Added Successfully 🌾',
+        title: t('FarmsAddPage.successTitle'),
         description: `${data.farmName} has been added to your account.`,
       });
       router.push('/farms');
@@ -99,8 +99,8 @@ export default function AddFarmPage() {
       console.error('Error adding farm:', error);
       toast({
         variant: 'destructive',
-        title: 'Error',
-        description: 'Failed to add farm. Please try again.',
+        title: t('FarmsAddPage.errorTitle'),
+        description: t('FarmsAddPage.errorDescription'),
       });
     } finally {
       setIsSubmitting(false);
@@ -111,15 +111,15 @@ export default function AddFarmPage() {
     <AppShell>
       <div className="flex-1 p-4 md:p-6">
         <div className="mb-6">
-          <h1 className="font-headline text-3xl font-bold">Add New Farm</h1>
+          <h1 className="font-headline text-3xl font-bold">{t('FarmsAddPage.title')}</h1>
           <p className="text-muted-foreground">
-            Register a new farm to start tracking crops and getting AI recommendations.
+            {t('FarmsAddPage.description')}
           </p>
         </div>
 
         <Card className="max-w-2xl">
           <CardHeader>
-            <CardTitle>Farm Details</CardTitle>
+            <CardTitle>{t('FarmsAddPage.cardTitle')}</CardTitle>
           </CardHeader>
           <CardContent>
             <Form {...form}>
@@ -130,9 +130,9 @@ export default function AddFarmPage() {
                     name="farmName"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Farm Name</FormLabel>
+                        <FormLabel>{t('FarmsAddPage.farmNameLabel')}</FormLabel>
                         <FormControl>
-                          <Input placeholder="e.g., Green Valley Farm" {...field} />
+                          <Input placeholder={t('FarmsAddPage.farmNamePlaceholder')} {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -143,12 +143,12 @@ export default function AddFarmPage() {
                     name="sizeAcres"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Size (Acres)</FormLabel>
+                        <FormLabel>{t('FarmsAddPage.sizeLabel')}</FormLabel>
                         <FormControl>
                           <Input
                             type="number"
                             step="0.1"
-                            placeholder="e.g., 5.5"
+                            placeholder={t('FarmsAddPage.sizePlaceholder')}
                             {...field}
                             onChange={(e) =>
                               field.onChange(parseFloat(e.target.value) || 0)
@@ -166,12 +166,12 @@ export default function AddFarmPage() {
                   name="location"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Location</FormLabel>
+                      <FormLabel>{t('FarmsAddPage.locationLabel')}</FormLabel>
                       <FormControl>
-                        <Input placeholder="e.g., Village Khanna, Punjab" {...field} />
+                        <Input placeholder={t('FarmsAddPage.locationPlaceholder')} {...field} />
                       </FormControl>
                       <FormDescription>
-                        Provide the specific location or address of your farm.
+                        {t('FarmsAddPage.locationDescription')}
                       </FormDescription>
                       <FormMessage />
                     </FormItem>
@@ -183,11 +183,11 @@ export default function AddFarmPage() {
                   name="district"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>District</FormLabel>
+                      <FormLabel>{t('FarmsAddPage.districtLabel')}</FormLabel>
                       <Select onValueChange={field.onChange} defaultValue={field.value}>
                         <FormControl>
                           <SelectTrigger>
-                            <SelectValue placeholder="Select your district" />
+                            <SelectValue placeholder={t('FarmsAddPage.districtPlaceholder')} />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
@@ -209,11 +209,11 @@ export default function AddFarmPage() {
                     name="soilType"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Soil Type</FormLabel>
+                        <FormLabel>{t('FarmsAddPage.soilTypeLabel')}</FormLabel>
                         <Select onValueChange={field.onChange} defaultValue={field.value}>
                           <FormControl>
                             <SelectTrigger>
-                              <SelectValue placeholder="Select soil type" />
+                              <SelectValue placeholder={t('FarmsAddPage.soilTypePlaceholder')} />
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent>
@@ -237,11 +237,11 @@ export default function AddFarmPage() {
                     name="topography"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Topography</FormLabel>
+                        <FormLabel>{t('FarmsAddPage.topographyLabel')}</FormLabel>
                         <Select onValueChange={field.onChange} defaultValue={field.value}>
                           <FormControl>
                             <SelectTrigger>
-                              <SelectValue placeholder="Select topography" />
+                              <SelectValue placeholder={t('FarmsAddPage.topographyPlaceholder')} />
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent>
@@ -262,11 +262,11 @@ export default function AddFarmPage() {
                     name="waterSource"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Water Source</FormLabel>
+                        <FormLabel>{t('FarmsAddPage.waterSourceLabel')}</FormLabel>
                         <Select onValueChange={field.onChange} defaultValue={field.value}>
                           <FormControl>
                             <SelectTrigger>
-                              <SelectValue placeholder="Select water source" />
+                              <SelectValue placeholder={t('FarmsAddPage.waterSourcePlaceholder')} />
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent>
@@ -287,15 +287,15 @@ export default function AddFarmPage() {
 
                 <div className="flex gap-4">
                   <Button type="button" variant="outline" onClick={() => router.back()}>
-                    Cancel
+                    {t('FarmsAddPage.cancel')}
                   </Button>
                   <Button type="submit" disabled={isSubmitting}>
                     {isSubmitting ? (
-                      <>Adding Farm...</>
+                      <>{t('FarmsAddPage.addingFarm')}</>
                     ) : (
                       <>
                         <Plus className="mr-2 h-4 w-4" />
-                        Add Farm
+                        {t('FarmsAddPage.addFarm')}
                       </>
                     )}
                   </Button>

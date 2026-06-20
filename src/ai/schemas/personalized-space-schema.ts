@@ -12,6 +12,10 @@ export const PersonalizedCultivationPlanInputSchema = z.object({
     'Flag indicating if the soilReport is a file/image (Data URI) instead of plain text. Crucial for routing to vision models.'
   ),
   userProfile: z.string().describe("A brief summary of the farmer's profile, including location, experience, and resources."),
+  language: z
+    .string()
+    .optional()
+    .describe('The language the response should be written in (e.g. "Tamil", "Hindi", "English"). Defaults to English if not specified.'),
 });
 export type PersonalizedCultivationPlanInput = z.infer<typeof PersonalizedCultivationPlanInputSchema>;
 

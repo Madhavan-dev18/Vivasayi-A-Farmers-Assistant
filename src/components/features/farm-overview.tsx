@@ -6,8 +6,10 @@ import { supabase } from '@/lib/supabase-client';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { MapPin, Droplets, Plus } from 'lucide-react';
+import { useLanguage } from '@/context/LanguageContext';
 
 export function FarmOverview() {
+  const { t } = useLanguage();
   const [farms, setFarms] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -44,21 +46,21 @@ export function FarmOverview() {
       {farms.length === 0 ? (
         <Card className="col-span-full">
           <CardHeader>
-            <CardTitle>No Farms Yet</CardTitle>
-            <CardDescription>Add a farm profile to get started.</CardDescription>
+            <CardTitle>{t('FarmsPage.noFarmsYet')}</CardTitle>
+            <CardDescription>{t('FarmsPage.description')}</CardDescription>
           </CardHeader>
           <CardContent>
             <Button asChild size="sm">
               <Link href="/farms/add">
                 <Plus className="mr-2 h-4 w-4" />
-                Add Your First Farm
+                {t('FarmsPage.addFirstFarm')}
               </Link>
             </Button>
           </CardContent>
         </Card>
       ) : (
-        farms.map((farm, index) => (
-          <Card key={index}>
+        farms.map((farm) => (
+          <Card key={farm.id}>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
               <CardTitle className="text-sm font-medium">{farm.name || 'My Farm'}</CardTitle>
               <MapPin className="h-4 w-4 text-muted-foreground" />

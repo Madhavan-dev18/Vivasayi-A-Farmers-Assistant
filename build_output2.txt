@@ -1,0 +1,55 @@
+   ▲ Next.js 15.5.3
+   - Environments: .env.local
+
+   Creating an optimized production build ...
+ ⚠ Compiled with warnings in 78s
+
+./node_modules/@opentelemetry/sdk-node/build/src/TracerProviderWithEnvExporter.js
+Module not found: Can't resolve '@opentelemetry/exporter-jaeger' in 'M:\Personal\Workspace\Poject X\node_modules\@opentelemetry\sdk-node\build\src'
+
+Import trace for requested module:
+./node_modules/@opentelemetry/sdk-node/build/src/TracerProviderWithEnvExporter.js
+./node_modules/@opentelemetry/sdk-node/build/src/sdk.js
+./node_modules/@opentelemetry/sdk-node/build/src/index.js
+./node_modules/@genkit-ai/core/lib/tracing/node-telemetry-provider.mjs
+./node_modules/@genkit-ai/core/lib/node.mjs
+./node_modules/genkit/lib/common.mjs
+./node_modules/genkit/lib/index.mjs
+./src/ai/flows/disease-detection-flow.ts
+
+ ✓ Compiled successfully in 87s
+   Skipping linting
+   Checking validity of types ...
+   Collecting page data ...
+   Generating static pages (0/15) ...
+   Generating static pages (3/15) 
+   Generating static pages (7/15) 
+   Generating static pages (11/15) 
+ ✓ Generating static pages (15/15)
+   Finalizing page optimization ...
+   Collecting build traces ...
+
+Route (app)                                 Size  First Load JS
+┌ ○ /                                      127 B         102 kB
+├ ○ /_not-found                             1 kB         103 kB
+├ ƒ /auth/callback                         127 B         102 kB
+├ ○ /crop-recommendation                 5.64 kB         310 kB
+├ ○ /dashboard                           4.67 kB         279 kB
+├ ○ /disease-detection                     10 kB         284 kB
+├ ○ /farms                               1.75 kB         276 kB
+├ ○ /farms/add                           1.99 kB         306 kB
+├ ○ /login                               2.63 kB         248 kB
+├ ○ /personalized-space                   174 kB         479 kB
+├ ○ /profile                             2.75 kB         277 kB
+└ ○ /register                             2.9 kB         301 kB
++ First Load JS shared by all             102 kB
+  ├ chunks/493-96d041137d59c2c4.js       45.5 kB
+  ├ chunks/4bd1b696-409494caf8c83275.js  54.2 kB
+  └ other shared chunks (total)          2.16 kB
+
+
+ƒ Middleware                             89.7 kB
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+

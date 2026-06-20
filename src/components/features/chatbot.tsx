@@ -19,21 +19,17 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { Bot, LoaderCircle, Send, User, Wheat } from 'lucide-react';
 import { VoiceInputButton } from './voice-input-button';
 import { SpeakButton } from './speak-button';
+import { useLanguage } from '@/context/LanguageContext';
+import { getLanguageMeta } from '@/lib/languages';
 
 type Message = {
-  id: number;
+  id: string;
   role: 'user' | 'bot';
   text: string;
 };
 
 export default function Chatbot() {
-  const t = {
-    title: "Vivasayi Chat",
-    description: "Ask me anything about farming.",
-    inputPlaceholder: "Type your question...",
-    openChatbot: "Open Chatbot"
-  };
-  const locale = 'en';
+  const { t, language } = useLanguage();
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const [isPending, startTransition] = useTransition();
@@ -56,7 +52,8 @@ export default function Chatbot() {
   const handleSend = () => {
     if (!input.trim()) return;
 
-    const userMessage: Message = { id: Date.now(), role: 'user', text: input };
+    const currentInput = input;
+    const userMessage: Message = { id: crypto.randomUUID(), role: 'user', text: currentInput };
     setMessages((prev) => [...prev, userMessage]);
     setInput('');
 
@@ -69,15 +66,15 @@ export default function Chatbot() {
       slowTimerRef.current = setTimeout(() => setIsSlow(true), 4000);
 
       try {
-        const response = await multilingualChatbotAssistance({ query: input, language: locale });
-        const botMessage: Message = { id: Date.now() + 1, role: 'bot', text: response.answer };
+        const response = await multilingualChatbotAssistance({ query: currentInput, language: getLanguageMeta(language).englishName });
+        const botMessage: Message = { id: crypto.randomUUID(), role: 'bot', text: response.answer };
         setMessages((prev) => [...prev, botMessage]);
       } catch (error) {
         console.error('Chatbot error:', error);
         const message = error instanceof Error ? error.message : '';
         const isOverloaded = /503|overloaded|high demand/i.test(message);
         const errorMessage: Message = {
-          id: Date.now() + 1,
+          id: crypto.randomUUID(),
           role: 'bot',
           text: isOverloaded
             ? "Our AI service is getting a lot of requests right now. Please try again in a minute."
@@ -100,16 +97,16 @@ export default function Chatbot() {
       <DialogTrigger asChild>
         <Button className="fixed bottom-6 right-6 h-16 w-16 rounded-full shadow-lg" size="icon">
           <Bot className="h-8 w-8" />
-          <span className="sr-only">{t.openChatbot}</span>
+          <span className="sr-only">{t('Chatbot.openChatbot')}</span>
         </Button>
       </DialogTrigger>
       <DialogContent className="max-w-lg p-0">
         <DialogHeader className="p-6 pb-2">
           <DialogTitle className="flex items-center gap-2 font-headline text-2xl">
-            <Wheat className="text-primary" /> {t.title}
+            <Wheat className="text-primary" /> {t('Chatbot.title')}
           </DialogTitle>
           <DialogDescription>
-            {t.description}
+            {t('Chatbot.description')}
           </DialogDescription>
         </DialogHeader>
 
@@ -171,7 +168,7 @@ export default function Chatbot() {
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && handleSend()}
-                placeholder={t.inputPlaceholder}
+                placeholder={t('Chatbot.inputPlaceholder')}
                 className="pr-10"
               />
               <div className="absolute inset-y-0 right-2 flex items-center">

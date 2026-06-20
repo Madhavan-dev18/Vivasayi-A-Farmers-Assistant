@@ -17,6 +17,7 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
+import { useLanguage } from '@/context/LanguageContext';
 
 const loginSchema = z.object({
   email: z.string().email('Please enter a valid email address'),
@@ -27,6 +28,7 @@ type FormData = z.infer<typeof loginSchema>;
 
 export function LoginForm() {
   const { toast } = useToast();
+  const { t } = useLanguage();
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
 
@@ -49,16 +51,16 @@ export function LoginForm() {
       if (error) throw error;
 
       toast({
-        title: 'Login Successful 🌾',
-        description: 'Welcome back to Vivasayi!',
+        title: t('LoginForm.successTitle'),
+        description: t('LoginForm.successDescription'),
       });
 
-      router.push('/dashboard');
+      window.location.href = '/dashboard';
     } catch (error: any) {
       console.error('Login failed:', error);
       toast({
-        title: 'Login Error',
-        description: error.message || 'Invalid email or password.',
+        title: t('LoginForm.errorTitle'),
+        description: error.message || t('LoginForm.errorDescription'),
         variant: 'destructive',
       });
     } finally {
@@ -67,6 +69,7 @@ export function LoginForm() {
   };
 
   const handleGoogleSignIn = async () => {
+    setIsLoading(true);
     try {
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
@@ -79,10 +82,11 @@ export function LoginForm() {
     } catch (error: any) {
       console.error('Google login failed:', error);
       toast({
-        title: 'Login Error',
-        description: 'Failed to sign in with Google.',
+        title: t('LoginForm.errorTitle'),
+        description: t('LoginForm.googleErrorDescription'),
         variant: 'destructive',
       });
+      setIsLoading(false);
     }
   };
 
@@ -95,9 +99,9 @@ export function LoginForm() {
             name="email"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Email Address</FormLabel>
+                <FormLabel>{t('LoginForm.emailLabel')}</FormLabel>
                 <FormControl>
-                  <Input type="email" placeholder="farmer@vivasayi.com" {...field} />
+                  <Input type="email" placeholder={t('LoginForm.emailPlaceholder')} {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -109,9 +113,9 @@ export function LoginForm() {
             name="password"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Password</FormLabel>
+                <FormLabel>{t('LoginForm.passwordLabel')}</FormLabel>
                 <FormControl>
-                  <Input type="password" placeholder="Enter your password" {...field} />
+                  <Input type="password" placeholder={t('LoginForm.passwordPlaceholder')} {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -119,7 +123,7 @@ export function LoginForm() {
           />
 
           <Button type="submit" className="w-full" disabled={isLoading}>
-            {isLoading ? 'Signing in...' : 'Log In'}
+            {isLoading ? t('LoginForm.loggingIn') : t('LoginForm.loginButton')}
           </Button>
         </form>
       </Form>
@@ -129,12 +133,12 @@ export function LoginForm() {
           <span className="w-full border-t" />
         </div>
         <div className="relative flex justify-center text-xs uppercase">
-          <span className="bg-background px-2 text-muted-foreground">Or continue with</span>
+          <span className="bg-background px-2 text-muted-foreground">{t('LoginForm.orContinueWith')}</span>
         </div>
       </div>
 
       <Button type="button" variant="outline" className="w-full" onClick={handleGoogleSignIn}>
-        Google
+        {t('LoginForm.googleButton')}
       </Button>
     </div>
   );

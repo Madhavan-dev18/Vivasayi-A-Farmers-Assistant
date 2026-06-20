@@ -35,7 +35,7 @@ export function RecentSensorReadings() {
     }
 
     fetchReadings();
-  }, [supabase]);
+  }, []);
 
   if (loading) {
     return <div className="h-32 border rounded-xl bg-muted/50 animate-pulse"></div>;

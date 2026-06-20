@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import './globals.css';
 import { Toaster } from '@/components/ui/toaster';
 import { AuthProvider } from '@/context/AuthContext';
+import { LanguageProvider } from '@/context/LanguageContext';
 
 export const metadata: Metadata = {
   title: 'Vivasayi - AI Farmer Assistant',
@@ -30,10 +31,12 @@ export default async function RootLayout({
         <meta name="theme-color" content="#f39c12" />
       </head>
       <body className="font-body antialiased">
-        <AuthProvider>
-          {children}
-          <Toaster />
-        </AuthProvider>
+        <LanguageProvider>
+          <AuthProvider>
+            {children}
+            <Toaster />
+          </AuthProvider>
+        </LanguageProvider>
       </body>
     </html>
   );

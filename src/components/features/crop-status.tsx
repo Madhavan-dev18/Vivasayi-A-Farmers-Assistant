@@ -54,7 +54,7 @@ export function CropStatus() {
     }
 
     fetchCrops();
-  }, [supabase]);
+  }, []);
 
   // Loading Skeleton
   if (loading) {

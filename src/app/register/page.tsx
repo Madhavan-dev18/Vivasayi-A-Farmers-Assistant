@@ -1,12 +1,12 @@
+'use client';
+
 import { RegisterForm } from '@/components/features/register-form';
 import { AppShell } from '@/components/layout/app-shell';
 import Link from 'next/link';
+import { useLanguage } from '@/context/LanguageContext';
 
 export default function RegisterPage() {
-  const t = {
-    title: 'Join Vivasayi',
-    description: 'Create your free farmer account.',
-  };
+  const { t } = useLanguage();
 
   return (
     <AppShell>
@@ -14,20 +14,20 @@ export default function RegisterPage() {
         <div className="mx-auto w-full max-w-sm">
           <div className="mb-6 text-center">
             <h1 className="font-headline text-3xl font-bold">
-              {t.title}
+              {t('RegisterPage.title')}
             </h1>
             <p className="text-muted-foreground">
-              {t.description}
+              {t('RegisterPage.description')}
             </p>
           </div>
           <RegisterForm />
           <div className="mt-6 text-center text-sm text-muted-foreground">
-            Already have an account?{' '}
+            {t('RegisterPage.haveAccount')}{' '}
             <Link
               href="/login"
               className="font-medium text-primary hover:underline"
             >
-              Sign in
+              {t('RegisterPage.signIn')}
             </Link>
           </div>
         </div>

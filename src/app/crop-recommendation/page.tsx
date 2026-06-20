@@ -1,21 +1,20 @@
+'use client';
 
 import CropRecommendationForm from '@/components/features/crop-recommendation-form';
 import { AppShell } from '@/components/layout/app-shell';
+import { useLanguage } from '@/context/LanguageContext';
 
 export default function CropRecommendationPage() {
-  const t = {
-    title: 'AI Crop Recommendation',
-    description: 'Fill in the details below to receive AI-powered crop recommendations tailored to your farm.'
-  };
+  const { t } = useLanguage();
   return (
     <AppShell>
       <div className="flex-1 p-4 md:p-6">
         <div className="mb-6">
           <h1 className="font-headline text-3xl font-bold">
-            {t.title}
+            {t('CropRecommendationPage.title')}
           </h1>
           <p className="text-muted-foreground">
-            {t.description}
+            {t('CropRecommendationPage.description')}
           </p>
         </div>
         <CropRecommendationForm />

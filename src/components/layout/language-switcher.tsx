@@ -1,7 +1,5 @@
-
 'use client';
 
-import { useState } from 'react';
 import {
   Select,
   SelectContent,
@@ -9,32 +7,22 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { useLanguage } from '@/context/LanguageContext';
+import { SUPPORTED_LANGUAGES, LanguageCode } from '@/lib/languages';
 
 export default function LanguageSwitcher() {
-  const t = {
-    selectLanguage: 'Select Language'
-  };
-  const [locale, setLocale] = useState('en');
-
-  function onSelectChange(value: string) {
-    setLocale(value);
-    // In a real app, you'd likely want to change the actual locale here.
-    // For now, this is a visual-only change.
-  }
-
-  // A simplified list of languages for this single-language version
-  const allLocales = [
-    { code: 'en', name: 'English' },
-  ];
+  const { language, setLanguage, t } = useLanguage();
 
   return (
-    <Select defaultValue={locale} onValueChange={onSelectChange} disabled>
-      <SelectTrigger className="w-fit">
-        <SelectValue placeholder={t.selectLanguage} />
+    <Select value={language} onValueChange={(value) => setLanguage(value as LanguageCode)}>
+      <SelectTrigger className="w-[88px] shrink-0 sm:w-[120px]">
+        <SelectValue placeholder={t('LanguageSwitcher.selectLanguage')} />
       </SelectTrigger>
-      <SelectContent>
-        {allLocales.map((lang) => (
-          <SelectItem key={lang.code} value={lang.code}>{lang.name}</SelectItem>
+      <SelectContent className="max-h-72">
+        {SUPPORTED_LANGUAGES.map((lang) => (
+          <SelectItem key={lang.code} value={lang.code}>
+            {lang.nativeName}
+          </SelectItem>
         ))}
       </SelectContent>
     </Select>

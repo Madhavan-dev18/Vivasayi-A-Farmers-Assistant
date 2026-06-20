@@ -26,6 +26,7 @@ export const getPersonalizedCultivationPlan = ai.defineFlow(
       ${!input.isSoilReportFile && input.soilReport ? `Soil Report Data: ${input.soilReport}` : ''}
       
       Ensure the output strictly follows the schema, providing a weekly stage, detailed tasks, and a daily breakdown.
+      ${input.language ? `Write your entire response — every stage name, task description, and daily task — in ${input.language}, using that language's native script (not a Latin-letter transliteration).` : ''}
     `;
 
     // Handle multimodal input if the user uploaded a file/image (Data URI)

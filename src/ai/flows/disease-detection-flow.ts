@@ -18,6 +18,10 @@ const DiseaseDetectionInputSchema = z.object({
     .describe(
       "A photo of a plant leaf, as a data URI that must include a MIME type and use Base64 encoding. Expected format: 'data:<mimetype>;base64,<encoded_data>'."
     ),
+  language: z
+    .string()
+    .optional()
+    .describe('The language the response should be written in (e.g. "Tamil", "Hindi", "English"). Defaults to English if not specified.'),
 });
 export type DiseaseDetectionInput = z.infer<typeof DiseaseDetectionInputSchema>;
 
@@ -56,6 +60,8 @@ Follow these steps for your analysis:
 7.  **Recommend Treatment**: Provide a simple, actionable treatment plan. For diseases, suggest organic or chemical solutions. For pests, recommend control methods. If healthy, give a relevant care tip.
 
 Analyze the following image and provide your diagnosis in the specified format.
+
+{{#if language}}Write your entire response — the disease name, description, and treatment — in {{language}}. Use the language's native script, not a transliteration into Latin/English letters.{{/if}}
 
 Image: {{media url=photoDataUri}}`,
 });
