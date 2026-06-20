@@ -315,7 +315,8 @@
     "of": "का",
     "tasksForWeek": "सप्ताह के कार्य",
     "dailyPlan": "दैनिक योजना",
-    "noSpecificTask": "कोई विशेष कार्य नहीं"
+    "noSpecificTask": "कोई विशेष कार्य नहीं",
+    "clickForDetails": "विवरण के लिए क्लिक करें"
   },
   "FarmOverview": {
     "myFarm": "मेरा खेत",

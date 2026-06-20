@@ -315,7 +315,8 @@
     "of": "of",
     "tasksForWeek": "Tasks for Week",
     "dailyPlan": "Daily Plan",
-    "noSpecificTask": "No specific task"
+    "noSpecificTask": "No specific task",
+    "clickForDetails": "Click for details"
   },
   "FarmOverview": {
     "myFarm": "My Farm",

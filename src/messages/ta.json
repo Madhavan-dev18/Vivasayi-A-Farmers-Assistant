@@ -315,7 +315,8 @@
     "of": "இல்",
     "tasksForWeek": "வாரத்திற்கான பணிகள்",
     "dailyPlan": "தினசரி திட்டம்",
-    "noSpecificTask": "குறிப்பிட்ட பணி இல்லை"
+    "noSpecificTask": "குறிப்பிட்ட பணி இல்லை",
+    "clickForDetails": "விவரங்களுக்கு கிளிக் செய்யவும்"
   },
   "FarmOverview": {
     "myFarm": "என் பண்ணை",

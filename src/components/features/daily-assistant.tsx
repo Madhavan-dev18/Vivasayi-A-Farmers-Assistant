@@ -8,6 +8,7 @@ import { SpeakButton } from './speak-button';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
 import { useLanguage } from '@/context/LanguageContext';
+import { getLanguageMeta } from '@/lib/languages';
 import { Progress } from '@/components/ui/progress';
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -30,7 +31,7 @@ interface CultivationPlan {
 }
 
 export function DailyAssistant() {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const [plans, setPlans] = useState<CultivationPlan[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedWeekByPlan, setSelectedWeekByPlan] = useState<Record<string, number>>({});
@@ -87,6 +88,21 @@ export function DailyAssistant() {
       setSelectedWeekByPlan(prev => ({ ...prev, [planId]: week }));
   };
 
+  const handleDayClick = (day: any, cropName: string, weekNumber: number) => {
+    if (!day.tasks) return;
+    const currentLangMeta = getLanguageMeta(language);
+    const targetLanguageName = currentLangMeta.englishName;
+    const promptMessage = language === 'en'
+      ? `Explain this cultivation task in detail and provide step-by-step guidance: "${day.tasks}" for my ${cropName} crop during week ${weekNumber}.`
+      : `Explain this cultivation task in detail and provide step-by-step guidance in ${targetLanguageName}: "${day.tasks}" for my ${cropName} crop during week ${weekNumber}.`;
+
+    window.dispatchEvent(
+      new CustomEvent('open-chatbot', {
+        detail: { query: promptMessage },
+      })
+    );
+  };
+
   if (loading) {
     return (
       <Card>
@@ -122,7 +138,7 @@ export function DailyAssistant() {
                 <TabsList className="mb-4">
                     {plans.map(plan => (
                         <TabsTrigger key={plan.id} value={plan.id}>
-                          {t(`CropRecommendationForm.${plan.cropName.toLowerCase()}`) || plan.cropName}
+                          {plan.cropName ? (t(`CropRecommendationForm.${plan.cropName.toLowerCase()}`) || plan.cropName) : ''}
                         </TabsTrigger>
                     ))}
                 </TabsList>
@@ -175,7 +191,7 @@ export function DailyAssistant() {
                                         </div>
                                         <span className="font-bold text-sm">{t('DailyAssistant.week')} {weekNumber}</span>
                                         <span className="text-xs text-center truncate w-full">
-                                            {t(`stages.${week.stage.toLowerCase().replace(/[^a-z0-9]/g, '')}`) || week.stage}
+                                            {week.stage ? (t(`stages.${week.stage.toLowerCase().replace(/[^a-z0-9]/g, '')}`) || week.stage) : ''}
                                         </span>
                                     </button>
                                     );
@@ -189,10 +205,10 @@ export function DailyAssistant() {
                                 <CardHeader className="px-4 py-3">
                                     <CardTitle className="flex flex-wrap items-center justify-between gap-2 text-base">
                                         <span>
-                                            {t('DailyAssistant.tasksForWeek')} {selectedWeek}: {t(`stages.${selectedWeekData.stage.toLowerCase().replace(/[^a-z0-9]/g, '')}`) || selectedWeekData.stage}
+                                            {t('DailyAssistant.tasksForWeek')} {selectedWeek}: {selectedWeekData.stage ? (t(`stages.${selectedWeekData.stage.toLowerCase().replace(/[^a-z0-9]/g, '')}`) || selectedWeekData.stage) : ''}
                                         </span>
                                         <SpeakButton 
-                                            textToSpeak={`${t('DailyAssistant.tasksForWeek')} ${selectedWeek}. ${t(`stages.${selectedWeekData.stage.toLowerCase().replace(/[^a-z0-9]/g, '')}`) || selectedWeekData.stage}. ${selectedWeekData.tasks}`} 
+                                            textToSpeak={`${t('DailyAssistant.tasksForWeek')} ${selectedWeek}. ${selectedWeekData.stage ? (t(`stages.${selectedWeekData.stage.toLowerCase().replace(/[^a-z0-9]/g, '')}`) || selectedWeekData.stage) : ''}. ${selectedWeekData.tasks || ''}`} 
                                         />
                                     </CardTitle>
                                 </CardHeader>
@@ -206,15 +222,23 @@ export function DailyAssistant() {
                                            const isToday = diffTime >= 0 && actualCurrentWeek === selectedWeek && index === (Math.floor(diffTime / (1000 * 60 * 60 * 24)) % 7);
 
                                            return (
-                                            <div key={index} className={cn("flex flex-col items-center p-2 rounded-lg border", isToday ? "bg-primary/10 border-primary shadow-sm ring-1 ring-primary" : "bg-background/50")}>
-                                                <p className={cn("text-xs", isToday ? "font-bold text-primary" : "font-semibold")}>
-                                                  {t(`days.${day.day.toLowerCase()}`) || day.day}
-                                                </p>
-                                                <div className="my-2">
-                                                    <DynamicIcon name={day.iconName} className={cn("size-5", isToday ? "text-primary" : "text-muted-foreground")} />
-                                                </div>
-                                                <p className="text-[10px] text-muted-foreground line-clamp-3 leading-tight">{day.tasks || t('DailyAssistant.noSpecificTask')}</p>
-                                            </div>
+                                             <button
+                                               key={index}
+                                               onClick={() => handleDayClick(day, plan.cropName, selectedWeek)}
+                                               title={t('DailyAssistant.clickForDetails')}
+                                               className={cn(
+                                                 "flex flex-col items-center p-2 rounded-lg border text-center transition-all hover:scale-105 hover:border-primary/50 hover:bg-primary/5 focus:outline-none focus:ring-2 focus:ring-primary w-full",
+                                                 isToday ? "bg-primary/10 border-primary shadow-sm ring-1 ring-primary" : "bg-background/50"
+                                               )}
+                                             >
+                                                 <p className={cn("text-xs", isToday ? "font-bold text-primary" : "font-semibold")}>
+                                                   {t(`days.${day.day.toLowerCase()}`) || day.day}
+                                                 </p>
+                                                 <div className="my-2">
+                                                     <DynamicIcon name={day.iconName} className={cn("size-5", isToday ? "text-primary" : "text-muted-foreground")} />
+                                                 </div>
+                                                 <p className="text-[10px] text-muted-foreground line-clamp-3 leading-tight">{day.tasks || t('DailyAssistant.noSpecificTask')}</p>
+                                             </button>
                                            );
                                         })}
                                       </div>

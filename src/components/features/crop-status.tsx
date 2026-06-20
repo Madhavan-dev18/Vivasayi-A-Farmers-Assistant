@@ -104,7 +104,7 @@ export function CropStatus() {
             <div key={crop.id} className="flex items-center justify-between border-b pb-4 last:border-0 last:pb-0">
               <div className="space-y-1">
                 <div className="font-medium leading-none flex items-center gap-2">
-                  {t(`CropRecommendationForm.${crop.name.toLowerCase()}`) || crop.name}
+                  {crop.name ? (t(`CropRecommendationForm.${crop.name.toLowerCase()}`) || crop.name) : ''}
                   <Badge 
                     variant={
                       crop.status === 'Healthy' ? 'default' : 

@@ -92,7 +92,7 @@ export function WeatherCard({ location }: WeatherCardProps) {
               <div>
                 <p className="text-muted-foreground">{t('WeatherCard.forecast')}</p>
                 <p className="font-bold text-lg capitalize">
-                  {t(`weather.forecast.${weather.forecast.toLowerCase().replace(/ /g, '_')}`) || weather.forecast}
+                  {weather.forecast ? (t(`weather.forecast.${weather.forecast.toLowerCase().replace(/ /g, '_')}`) || weather.forecast) : ''}
                 </p>
               </div>
             </div>

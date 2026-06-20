@@ -34,6 +34,7 @@ export default function Chatbot() {
   const [input, setInput] = useState('');
   const [isPending, startTransition] = useTransition();
   const [isSlow, setIsSlow] = useState(false);
+  const [open, setOpen] = useState(false);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
   const slowTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -49,13 +50,11 @@ export default function Chatbot() {
     };
   }, []);
 
-  const handleSend = () => {
-    if (!input.trim()) return;
+  const sendMessage = (queryText: string) => {
+    if (!queryText.trim()) return;
 
-    const currentInput = input;
-    const userMessage: Message = { id: crypto.randomUUID(), role: 'user', text: currentInput };
+    const userMessage: Message = { id: crypto.randomUUID(), role: 'user', text: queryText };
     setMessages((prev) => [...prev, userMessage]);
-    setInput('');
 
     startTransition(async () => {
       // Most successful Flash responses return well under 4s. If we're
@@ -66,7 +65,7 @@ export default function Chatbot() {
       slowTimerRef.current = setTimeout(() => setIsSlow(true), 4000);
 
       try {
-        const response = await multilingualChatbotAssistance({ query: currentInput, language: getLanguageMeta(language).englishName });
+        const response = await multilingualChatbotAssistance({ query: queryText, language: getLanguageMeta(language).englishName });
         const botMessage: Message = { id: crypto.randomUUID(), role: 'bot', text: response.answer };
         setMessages((prev) => [...prev, botMessage]);
       } catch (error) {
@@ -88,12 +87,31 @@ export default function Chatbot() {
     });
   };
 
+  const handleSend = () => {
+    sendMessage(input);
+    setInput('');
+  };
+
+  useEffect(() => {
+    const handleOpenChatbot = (e: Event) => {
+      const customEvent = e as CustomEvent<{ query: string }>;
+      setOpen(true);
+      if (customEvent.detail?.query) {
+        sendMessage(customEvent.detail.query);
+      }
+    };
+    window.addEventListener('open-chatbot', handleOpenChatbot);
+    return () => {
+      window.removeEventListener('open-chatbot', handleOpenChatbot);
+    };
+  }, [language]);
+
   const handleVoiceInput = (transcript: string) => {
     setInput(transcript);
   }
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button className="fixed bottom-6 right-6 h-16 w-16 rounded-full shadow-lg" size="icon">
           <Bot className="h-8 w-8" />
