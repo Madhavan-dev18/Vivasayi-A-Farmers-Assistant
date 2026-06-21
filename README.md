@@ -49,22 +49,36 @@ Vivasayi (Tamil/Hindi-rooted word for "farmer") is a web app that puts four AI-b
 
 ## 🧭 Feature tour
 
+*(Note: Add your screenshot images to the `screenshots/` directory at the root of the project to display them here.)*
+
+### Dashboard & Farm Tracking
+![Dashboard](./screenshots/dashboard.png)
+Standard CRUD over Supabase Postgres — add farms, track crops against them, view sensor readings if you wire up real IoT hardware (the table and UI are ready; there's no hardware integration shipped).
+
+### AI Crop Recommendations
+![Crop Recommendations](./screenshots/crop-recommendations.png)
+Get AI-generated suggestions based on soil type, district, and season.
+
 ### Disease Detection
+![Disease Detection](./screenshots/disease-detection.png)
 Upload a photo or use **`capture="environment"`** to open the phone's rear camera directly. The image goes to **Gemini 3.5 Flash** (vision-capable), which identifies the plant, examines symptoms (lesions, blight, discoloration, pests), and returns a structured diagnosis — disease name, confidence score, visual evidence, and a treatment recommendation — in the farmer's selected language.
 
 ### Personalized Cultivation Plan
+![Cultivation Plan](./screenshots/cultivation-plan.png)
 Pick a crop, district, and sowing date. Gemini generates a week-by-week plan tracked against today's date, with a progress bar showing where the farmer currently stands in the crop cycle. The rendered plan can be exported client-side as a paginated PDF (`jsPDF` + `html2canvas` — no server round-trip).
 
 ### Multilingual Chatbot
+![Multilingual Chatbot](./screenshots/chatbot.png)
 Grounded in a local farming knowledge base (soil, fertilizer, crop basics) bundled with the app, so it can answer common questions even without external lookups. Responds in the same language it's asked in, using native script — not transliteration.
+
+### Market Prices & Weather
+![Market Prices](./screenshots/market-prices.png)
+Current weather for the farmer's primary district and a reference table of recent mandi (market) prices.
 
 ### Voice In, Voice Out
 Two browser-native Web Speech API integrations, no third-party service:
 - 🎤 **Voice input** (`SpeechRecognition`) — speak a question instead of typing it
 - 🔊 **Speak button** (`SpeechSynthesis`) — has any AI response read aloud, auto-matched to the farmer's selected language with graceful fallback if the device has no voice installed for that language
-
-### Farm & Crop Tracking
-Standard CRUD over Supabase Postgres — add farms, track crops against them, view sensor readings if you wire up real IoT hardware (the table and UI are ready; there's no hardware integration shipped).
 
 ---
 
