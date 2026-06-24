@@ -330,4 +330,4 @@ This section exists so this README doesn't oversell the project. Verified direct
 
 Built for Indian farmers, in their own languages, by **[Madhavan-dev18](https://github.com/Madhavan-dev18)**
 
-</div
+</div>
